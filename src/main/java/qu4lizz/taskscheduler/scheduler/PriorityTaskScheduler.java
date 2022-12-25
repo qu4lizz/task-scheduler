@@ -1,15 +1,12 @@
 package qu4lizz.taskscheduler.scheduler;
 
-import qu4lizz.taskscheduler.task.UserTask;
-
-import java.util.concurrent.PriorityBlockingQueue;
+import qu4lizz.taskscheduler.utils.ConcurrentPriorityQueue;
 
 public class PriorityTaskScheduler extends TaskScheduler {
 
     public PriorityTaskScheduler(int noOfTasks) {
         super(noOfTasks);
-        nonActiveTasks = new PriorityBlockingQueue<>(noOfTasks, (x, y) ->
-                Integer.compare(y.getPriority(), x.getPriority()));
+        nonActiveTasks = new ConcurrentPriorityQueue<>((x, y) -> y.getPriority() - x.getPriority());
     }
 
 

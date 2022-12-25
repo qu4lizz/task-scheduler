@@ -1,14 +1,12 @@
 package qu4lizz.taskscheduler.scheduler;
 
 import qu4lizz.taskscheduler.exceptions.InvalidRequestException;
-import qu4lizz.taskscheduler.exceptions.TaskWontStartException;
 import qu4lizz.taskscheduler.task.UserTask;
+import qu4lizz.taskscheduler.utils.ConcurrentPriorityQueue;
 import qu4lizz.taskscheduler.utils.Utils;
-
 import java.util.HashSet;
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class TaskScheduler {
@@ -16,13 +14,13 @@ public abstract class TaskScheduler {
     protected Queue<UserTask> nonActiveTasks;
     protected HashSet<UserTask> activeTasks;
     private final Object lock = new Object();
-    private PriorityBlockingQueue<UserTask> tasksWithEndDate;
-    private Object killerLock = new Object();
+    private ConcurrentPriorityQueue<UserTask> tasksWithEndDate;
+    private final Object killerLock = new Object();
 
     public TaskScheduler(int noOfTasks) {
         maxTasks = new AtomicInteger(noOfTasks);
         activeTasks = new HashSet<>();
-        tasksWithEndDate = new PriorityBlockingQueue<>(4, (x, y) ->
+        tasksWithEndDate = new ConcurrentPriorityQueue<>((x, y) ->
                 Utils.dateDifference(y.getEndDate(), x.getEndDate()));
 
         Thread killerThread = new Thread(() -> {
@@ -52,14 +50,18 @@ public abstract class TaskScheduler {
         killerThread.start();
     }
 
-    public void addTask(UserTask task) throws InvalidRequestException, TaskWontStartException {
+    public void addTask(UserTask task) throws InvalidRequestException {
         task.setActions(this::handleTaskContinue, this::handleTaskFinishedOrKilled, this::handleTaskPaused);
         synchronized (lock) {
             if (taskCanBeStarted(task)) {
                 activeTasks.add(task);
                 task.start();
-                if (task.getEndDate() != null)
+                if (task.getEndDate() != null) {
                     tasksWithEndDate.add(task);
+                    synchronized (killerLock) {
+                        killerLock.notify();
+                    }
+                }
             } else if (taskCannotBeStartedYet(task)) {
                 nonActiveTasks.add(task);
             } else if (taskIsOutOfDate(task)) {
