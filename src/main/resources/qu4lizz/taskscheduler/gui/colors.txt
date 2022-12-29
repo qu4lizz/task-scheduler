@@ -1,0 +1,4 @@
+background=#104b51
+controls=#3b484d
+text=#fc8789
+hover=#674448

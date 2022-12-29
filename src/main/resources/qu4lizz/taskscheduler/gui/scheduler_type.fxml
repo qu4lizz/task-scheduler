@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #104b51;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="qu4lizz.taskscheduler.gui.SchedulerType">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="158.0" prefHeight="47.0" prefWidth="600.0" text="Choose the type of Task Scheduler" textAlignment="CENTER" textFill="#fc8789" AnchorPane.bottomAnchor="295.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="158.0">
+         <font>
+            <Font name="IBM Plex Serif Medm" size="25.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="34.0" prefHeight="47.0" prefWidth="600.0" text="Number of concurrent tasks" textAlignment="CENTER" textFill="#fc8789">
+         <font>
+            <Font name="IBM Plex Serif Medm" size="25.0" />
+         </font>
+      </Label>
+      <TextField fx:id="numOfTasks" alignment="CENTER" layoutX="180.0" layoutY="92.0" prefHeight="39.0" prefWidth="239.0">
+         <font>
+            <Font name="IBM Plex Serif" size="24.0" />
+         </font>
+      </TextField>
+      <Pane layoutX="48.0" layoutY="226.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fx:id="fifoImg" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#fifoOnMouseClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/fifo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutX="342.0" layoutY="226.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fx:id="priorityImg" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#priorityOnMouseClicked" pickOnBounds="true" preserveRatio="true" styleClass="image-view">
+               <image>
+                  <Image url="@icons/priority.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

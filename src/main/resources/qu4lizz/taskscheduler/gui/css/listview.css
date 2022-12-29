@@ -1,0 +1,33 @@
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #3b484d;
+    -fx-text-fill: #fc8789;
+}
+.list-view {
+    -fx-background-color: #3b484d;
+    -fx-text-fill: #fc8789;
+}
+.list-cell {
+    -fx-background-color: #5C3D2E;
+    -fx-font-family: "IBM Plex Serif";
+    -fx-font-size: 20px;
+    -fx-text-fill: #fc8789;
+}
+
+.list-cell:even {
+    -fx-background-color: #924144;
+}
+.list-cell:odd {
+    -fx-background-color: #674448;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #bd3d3f;
+}
+
+.list-view:vertical .virtual-flow .scroll-bar:vertical .track {
+    -fx-background-color: #bd3d3f;
+}
+
+.list-view:vertical .virtual-flow .scroll-bar:vertical .thumb {
+    -fx-background-color: #bd3d3f;
+}

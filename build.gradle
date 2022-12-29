@@ -13,7 +13,7 @@ repositories {
 }
 
 ext {
-    junitVersion = '5.8.2'
+    junitVersion = '5.9.0'
 }
 
 sourceCompatibility = '17'
@@ -34,9 +34,11 @@ javafx {
 }
 
 dependencies {
-
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'org.danilopianini:gson-extras:1.1.0'
+
 }
 
 test {

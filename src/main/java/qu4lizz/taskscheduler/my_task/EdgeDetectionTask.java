@@ -1,6 +1,5 @@
 package qu4lizz.taskscheduler.my_task;
 
-import qu4lizz.taskscheduler.exceptions.InvalidArgumentException;
 import qu4lizz.taskscheduler.task.UserTask;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,17 +13,62 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 
 public class EdgeDetectionTask extends UserTask {
-    private final BufferedImage[] sourceImages;
+    private BufferedImage[] sourceImages;
     private final String outputDir;
     private final AtomicBoolean didRead = new AtomicBoolean(true);
     private Thread[] threads;
 
-
-    public EdgeDetectionTask (String name, int numOfThreads, String[] paths, String out) throws IOException, InterruptedException, InvalidArgumentException {
+    public EdgeDetectionTask(String name, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
         super(name, numOfThreads);
-        sourceImages = new BufferedImage[paths.length];
-        outputDir = out;
+        readImages(numOfThreads, paths);
+        this.outputDir = outputDir;
+    }
+
+    public EdgeDetectionTask(String name, int priority, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+        super(name, priority, numOfThreads);
+        readImages(numOfThreads, paths);
+        this.outputDir = outputDir;
+    }
+
+    public EdgeDetectionTask(String name, String startDate, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+        super(name, startDate, numOfThreads);
+        readImages(numOfThreads, paths);
+        this.outputDir = outputDir;
+    }
+
+    public EdgeDetectionTask(String name, int priority, String startDate, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+        super(name, priority, startDate, numOfThreads);
+        readImages(numOfThreads, paths);
+        this.outputDir = outputDir;
+    }
+
+    public EdgeDetectionTask(String name, String startDate, String endDate, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+        super(name, startDate, endDate, numOfThreads);
+        readImages(numOfThreads, paths);
+        this.outputDir = outputDir;
+    }
+
+    public EdgeDetectionTask(String name, int priority, String startDate, String endDate, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+        super(name, priority, startDate, endDate, numOfThreads);
+        readImages(numOfThreads, paths);
+        this.outputDir = outputDir;
+    }
+
+    public EdgeDetectionTask(String name, String startDate, int time, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+        super(name, startDate, time, numOfThreads);
+        readImages(numOfThreads, paths);
+        this.outputDir = outputDir;
+    }
+
+    public EdgeDetectionTask (String name, int priority, String startDate, int time, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+        super(name, priority, startDate, time, numOfThreads);
+        this.outputDir = outputDir;
+        readImages(numOfThreads, paths);
+    }
+
+    private void readImages(int numOfThreads, String[] paths) throws IOException, InterruptedException {
         threads = new Thread[numOfThreads];
+        sourceImages = new BufferedImage[paths.length];
         int used = 0;
         for(int i = 0, k = 0; k < numOfThreads; k++) {
             final int index = i;
@@ -35,7 +79,6 @@ public class EdgeDetectionTask extends UserTask {
                         sourceImages[j] = ImageIO.read(new File(paths[j]));
                     }
                 } catch (IOException ignore) {
-                    ignore.printStackTrace();
                     didRead.set(false);
                 }
             });
@@ -51,10 +94,9 @@ public class EdgeDetectionTask extends UserTask {
         for(int i = 0; i < used; i++) {
             threads[i].join();
         }
-
     }
 
-    public void execute () {
+    public void execute() {
         long chunk = calculateChunk();
         long currentChunk;
         ArrayList<BufferedImage> chunkedImages = new ArrayList<>();
