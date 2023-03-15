@@ -11,7 +11,6 @@ import qu4lizz.taskscheduler.utils.Utils;
 public abstract class UserTask implements ITask {
     private final Task task;
     private String name;
-    private int time = -1;
     private String startDate;
     private String endDate;
     private int priority;
@@ -111,14 +110,10 @@ public abstract class UserTask implements ITask {
     public final int getPriority() { return priority; }
     public final String getStartDate() { return startDate; }
     public final String getEndDate() { return endDate; }
-
-    public final void start() throws InvalidRequestException { task.start(); }
-    public final void setActions(Task.Action onContinue, Task.Action onFinished, Task.Action onPaused) {
-        task.setActions(onContinue, onFinished, onPaused);
-    }
+    public final Task.State getState() { return task.getState(); }
 
 
-    protected final void checkForPause() throws InvalidRequestException {
+    public final void checkForPause() throws InvalidRequestException {
         boolean shouldPause = false;
         synchronized (task.getStateLock()) {
             if (task.getState() == Task.State.PAUSE_REQUESTED) {
@@ -135,6 +130,20 @@ public abstract class UserTask implements ITask {
             }
         }
     }
+    public final void checkForKill() throws InvalidRequestException {
+        synchronized (task.getStateLock()) {
+            if (task.getState() == Task.State.KILL_REQUESTED) {
+                task.setState(Task.State.KILLED);
+                task.getOnFinishedOrKilled().act(this);
+                throw new InvalidRequestException("Task was killed");
+            }
+        }
+    }
+
+    public final void checkForContextSwitch() throws InvalidRequestException {
+
+    }
+
     public final void waitForFinish() {
         synchronized (task.getWaitForFinishLock()) {
             synchronized (task.getStateLock()) {

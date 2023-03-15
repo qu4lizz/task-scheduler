@@ -4,8 +4,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class FIFOTaskScheduler extends TaskScheduler {
 
-    public FIFOTaskScheduler(int noOfTasks) {
-        super(noOfTasks);
+    public FIFOTaskScheduler(int numOfConcurrentTasks) {
+        super(numOfConcurrentTasks);
         nonActiveTasks = new ConcurrentLinkedQueue<>();
     }
 

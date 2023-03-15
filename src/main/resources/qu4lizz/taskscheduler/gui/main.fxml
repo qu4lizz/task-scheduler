@@ -18,7 +18,7 @@
             </AnchorPane>
             <AnchorPane prefHeight="600.0" prefWidth="350.0">
                <children>
-                  <Button alignment="CENTER" layoutX="88.0" layoutY="473.0" mnemonicParsing="false" onMouseClicked="#addNewTaskOnMouseClicked" prefHeight="72.0" prefWidth="173.0" stylesheets="@css/button.css" text="Add New Task" textAlignment="CENTER" wrapText="true">
+                  <Button alignment="CENTER" layoutX="76.0" layoutY="474.0" mnemonicParsing="false" onMouseClicked="#addNewTaskOnMouseClicked" prefHeight="73.0" prefWidth="197.0" stylesheets="@css/button.css" text="Add New Task" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="IBM Plex Serif SmBld" size="21.0" />
                      </font>

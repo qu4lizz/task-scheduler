@@ -1,25 +1,35 @@
 package qu4lizz.taskscheduler.task;
 
 import qu4lizz.taskscheduler.exceptions.InvalidRequestException;
-
-import java.util.Objects;
+import qu4lizz.taskscheduler.utils.Utils;
 
 public class Task {
     private State state = State.READY_FOR_SCHEDULE;
-    private UserTask userTask;
+    private final UserTask userTask;
     private final Object stateLock = new Object();
     private final Thread thread;
-    private Action onFinished;
+    private Action onFinishedOrKilled;
     private Action onPaused;
     private Action onContinue;
+    private Action onContextSwitch;
     private final Object pauseLock = new Object();
     private final Object waitForFinishLock = new Object();
+    private final Object finishLock = new Object();
 
     public interface Action {
-        void act(UserTask task) throws InvalidRequestException;
+        void act(Task task) throws InvalidRequestException;
     }
-    enum State {
-        READY_FOR_SCHEDULE, RUNNING, PAUSE_REQUESTED, PAUSED, CONTINUE_REQUESTED, FINISHED, KILLED
+    public enum State {
+        READY_FOR_SCHEDULE,
+        RUNNING,
+        PAUSE_REQUESTED,
+        PAUSED,
+        CONTINUE_REQUESTED,
+        CONTEXT_SWITCH_REQUESTED,
+        CONTINUE_REQUESTED_CONTEXT_SWITCH,
+        FINISHED,
+        KILL_REQUESTED,
+        KILLED
     }
 
     public Task(UserTask userTask) {
@@ -50,14 +60,18 @@ public class Task {
         return userTask;
     }
     public Action getOnPaused() { return onPaused; }
-    public void setActions(Action onContinue, Action onFinished, Action onPaused) {
+    public Action getOnFinishedOrKilled() { return onFinishedOrKilled; }
+    public void setActions(Action onContinue, Action onFinished, Action onPaused, Action onContextSwitch) {
         this.onContinue = onContinue;
-        this.onFinished = onFinished;
+        this.onFinishedOrKilled = onFinished;
         this.onPaused = onPaused;
+        this.onContextSwitch = onContextSwitch;
     }
     public Object getPauseLock() { return pauseLock; }
     public Object getWaitForFinishLock() { return waitForFinishLock; }
+    public Object getFinishLock() { return finishLock; }
 
+    // method called by TaskScheduler, not by user
     public void start() throws InvalidRequestException {
         synchronized (stateLock) {
             switch (state) {
@@ -67,7 +81,14 @@ public class Task {
                 }
                 case CONTINUE_REQUESTED -> {
                     state = State.RUNNING;
-                    onContinue.act(userTask);
+                    onContinue.act(this);
+                    synchronized (pauseLock) {
+                        pauseLock.notify();
+                    }
+                }
+                case CONTINUE_REQUESTED_CONTEXT_SWITCH -> {
+                    state = State.RUNNING;
+                    onContextSwitch.act(this);
                     synchronized (pauseLock) {
                         pauseLock.notify();
                     }
@@ -88,13 +109,20 @@ public class Task {
         }
     }
 
+    public void requestContextSwitch() throws InvalidRequestException {
+        synchronized (stateLock) {
+            switch (state) {
+                case RUNNING -> state = State.CONTEXT_SWITCH_REQUESTED;
+                default -> throw new InvalidRequestException("Task is not ready for context switch");
+            }
+        }
+    }
+
     public void requestKill() throws InvalidRequestException {
         synchronized (stateLock) {
             switch (state) {
-                case READY_FOR_SCHEDULE, RUNNING, PAUSE_REQUESTED, PAUSED, CONTINUE_REQUESTED -> {
-                    state = State.KILLED;
-                    onFinished.act(userTask);
-                }
+                case READY_FOR_SCHEDULE, RUNNING, PAUSE_REQUESTED, PAUSED, CONTINUE_REQUESTED, CONTEXT_SWITCH_REQUESTED ->
+                    state = State.KILL_REQUESTED;
                 default -> throw new InvalidRequestException("Task is not ready for kill");
             }
         }
@@ -113,9 +141,9 @@ public class Task {
 
     public void finish() throws InvalidRequestException {
         synchronized (stateLock) {
-            if (Objects.requireNonNull(state) == State.RUNNING) {
+            if (state == State.RUNNING) {
                 state = State.FINISHED;
-                onFinished.act(userTask);
+                onFinishedOrKilled.act(this);
                 synchronized (waitForFinishLock) {
                     waitForFinishLock.notifyAll();
                 }
@@ -123,5 +151,20 @@ public class Task {
                 throw new IllegalStateException("Task can't finish");
             }
         }
+    }
+
+    /**
+     * @return True if running tasks are less than maxTasks and task doesn't have a start date or
+     * start date is in the past and task doesn't have an end date or end date is in the future
+     */
+    public boolean canBeStarted() {
+        return (userTask.getStartDate() == null || (userTask.getStartDate().compareTo(Utils.getCurrentDateAndTime()) <= 0 &&
+                        (userTask.getEndDate() == null || userTask.getEndDate().compareTo(Utils.getCurrentDateAndTime()) > 0)));
+    }
+    public boolean isOutOfDate() {
+        return userTask.getEndDate() != null && userTask.getEndDate().compareTo(Utils.getCurrentDateAndTime()) <= 0;
+    }
+    public boolean cannotBeStartedYet() {
+        return userTask.getStartDate() != null && userTask.getStartDate().compareTo(Utils.getCurrentDateAndTime()) > 0;
     }
 }

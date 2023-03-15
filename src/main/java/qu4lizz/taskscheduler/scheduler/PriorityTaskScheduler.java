@@ -4,10 +4,8 @@ import qu4lizz.taskscheduler.utils.ConcurrentPriorityQueue;
 
 public class PriorityTaskScheduler extends TaskScheduler {
 
-    public PriorityTaskScheduler(int noOfTasks) {
-        super(noOfTasks);
+    public PriorityTaskScheduler(int numOfConcurrentTasks) {
+        super(numOfConcurrentTasks);
         nonActiveTasks = new ConcurrentPriorityQueue<>((x, y) -> y.getPriority() - x.getPriority());
     }
-
-
 }
