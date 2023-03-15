@@ -12,21 +12,25 @@ public class Task {
     private Action onPaused;
     private Action onContinue;
     private Action onContextSwitch;
+    private Action onStarted;
+
     private final Object pauseLock = new Object();
     private final Object waitForFinishLock = new Object();
     private final Object finishLock = new Object();
+    public final Object contextSwitchLock = new Object();
 
     public interface Action {
         void act(Task task) throws InvalidRequestException;
     }
     public enum State {
+        NOT_SCHEDULED,
         READY_FOR_SCHEDULE,
         RUNNING,
         PAUSE_REQUESTED,
         PAUSED,
         CONTINUE_REQUESTED,
         CONTEXT_SWITCH_REQUESTED,
-        CONTINUE_REQUESTED_CONTEXT_SWITCH,
+        CONTEXT_SWITCHED,
         FINISHED,
         KILL_REQUESTED,
         KILLED
@@ -56,16 +60,19 @@ public class Task {
     public Object getStateLock() {
         return stateLock;
     }
+    public Object getContextSwitchLock() { return contextSwitchLock; }
     public UserTask getUserTask() {
         return userTask;
     }
     public Action getOnPaused() { return onPaused; }
     public Action getOnFinishedOrKilled() { return onFinishedOrKilled; }
-    public void setActions(Action onContinue, Action onFinished, Action onPaused, Action onContextSwitch) {
+    public Action getOnContextSwitch() { return onContextSwitch; }
+    public void setActions(Action onContinue, Action onFinished, Action onPaused, Action onContextSwitch, Action onStarted) {
         this.onContinue = onContinue;
         this.onFinishedOrKilled = onFinished;
         this.onPaused = onPaused;
         this.onContextSwitch = onContextSwitch;
+        this.onStarted = onStarted;
     }
     public Object getPauseLock() { return pauseLock; }
     public Object getWaitForFinishLock() { return waitForFinishLock; }
@@ -86,11 +93,10 @@ public class Task {
                         pauseLock.notify();
                     }
                 }
-                case CONTINUE_REQUESTED_CONTEXT_SWITCH -> {
+                case CONTEXT_SWITCHED -> {
                     state = State.RUNNING;
-                    onContextSwitch.act(this);
-                    synchronized (pauseLock) {
-                        pauseLock.notify();
+                    synchronized (contextSwitchLock) {
+                        contextSwitchLock.notify();
                     }
                 }
                 default -> throw new InvalidRequestException("Task is not ready for start");
@@ -101,6 +107,7 @@ public class Task {
     public void requestPause() throws InvalidRequestException {
         synchronized (stateLock) {
             switch (state) {
+                // TODO: what happens if task is in context switch?
                 case RUNNING -> state = State.PAUSE_REQUESTED;
                 case CONTINUE_REQUESTED -> state = State.PAUSED;
                 case PAUSED, PAUSE_REQUESTED -> { }
@@ -128,9 +135,13 @@ public class Task {
         }
     }
 
-    public void requestContinue() throws InvalidRequestException {
+    public void requestContinueOrStart() throws InvalidRequestException {
         synchronized (stateLock) {
             switch (state) {
+                case NOT_SCHEDULED -> {
+                    state = State.READY_FOR_SCHEDULE;
+                    onStarted.act(this);
+                }
                 case PAUSED -> state = State.CONTINUE_REQUESTED;
                 case PAUSE_REQUESTED -> state = State.RUNNING;
                 case RUNNING, CONTINUE_REQUESTED -> { }

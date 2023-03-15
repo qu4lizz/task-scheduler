@@ -118,7 +118,7 @@ public abstract class UserTask implements ITask {
         synchronized (task.getStateLock()) {
             if (task.getState() == Task.State.PAUSE_REQUESTED) {
                 task.setState(Task.State.PAUSED);
-                task.getOnPaused().act(this);
+                task.getOnPaused().act(task);
                 shouldPause = true;
             }
         }
@@ -134,14 +134,27 @@ public abstract class UserTask implements ITask {
         synchronized (task.getStateLock()) {
             if (task.getState() == Task.State.KILL_REQUESTED) {
                 task.setState(Task.State.KILLED);
-                task.getOnFinishedOrKilled().act(this);
-                throw new InvalidRequestException("Task was killed");
+                task.getOnFinishedOrKilled().act(task);
             }
         }
     }
 
     public final void checkForContextSwitch() throws InvalidRequestException {
-
+        boolean shouldSwitch = false;
+        synchronized (task.getStateLock()) {
+            if (task.getState() == Task.State.CONTEXT_SWITCH_REQUESTED) {
+                task.setState(Task.State.CONTEXT_SWITCHED);
+                task.getOnContextSwitch().act(task);
+                shouldSwitch = true;
+            }
+        }
+        if (shouldSwitch) {
+            synchronized (task.getContextSwitchLock()) {
+                try {
+                    task.getContextSwitchLock().wait();
+                } catch (InterruptedException ignore) { }
+            }
+        }
     }
 
     public final void waitForFinish() {

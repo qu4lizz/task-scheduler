@@ -6,6 +6,6 @@ public class PriorityTaskScheduler extends TaskScheduler {
 
     public PriorityTaskScheduler(int numOfConcurrentTasks) {
         super(numOfConcurrentTasks);
-        nonActiveTasks = new ConcurrentPriorityQueue<>((x, y) -> y.getPriority() - x.getPriority());
+        waitingTasksToBeStarted = new ConcurrentPriorityQueue<>((x, y) -> y.getPriority() - x.getPriority());
     }
 }

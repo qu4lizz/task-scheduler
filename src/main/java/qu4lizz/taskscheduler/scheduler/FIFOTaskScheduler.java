@@ -6,7 +6,7 @@ public class FIFOTaskScheduler extends TaskScheduler {
 
     public FIFOTaskScheduler(int numOfConcurrentTasks) {
         super(numOfConcurrentTasks);
-        nonActiveTasks = new ConcurrentLinkedQueue<>();
+        waitingTasksToBeStarted = new ConcurrentLinkedQueue<>();
     }
 
 }
