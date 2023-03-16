@@ -4,12 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import qu4lizz.taskscheduler.task.UserTask;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -50,7 +54,7 @@ public class GUIController implements Initializable {
 
     @FXML
     void addNewTaskOnMouseClicked(MouseEvent event) {
-        /*var selected = taskTypes.getSelectionModel().getSelectedItem();
+        var selected = taskTypes.getSelectionModel().getSelectedItem();
         if (selected == null) {
             AlertBox.display("Error", "Please select a task type");
             return;
@@ -75,7 +79,7 @@ public class GUIController implements Initializable {
 
         } catch (Exception e) {
             throw new RuntimeException("Could not create task");
-        }*/
+        }
     }
 
 }

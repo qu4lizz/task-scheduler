@@ -16,9 +16,8 @@ public class Graph<T> {
             throw new CycleException("Cycle detected");
     }
 
-    public void removeTransition(T from, T to) {
-        if (graph.containsKey(from))
-            graph.get(from).remove(to);
+    public void removeNode(T val) {
+        graph.remove(val);
     }
 
     public boolean hasTransition(T from, T to) {

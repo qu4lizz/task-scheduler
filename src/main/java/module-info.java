@@ -4,8 +4,6 @@ module qu4lizz.taskscheduler.gui {
     requires java.desktop;
     requires com.google.gson;
     requires gson.extras;
-    requires jdk.incubator.foreign;
-    requires jnr.fuse;
 
     opens qu4lizz.taskscheduler.gui to javafx.fxml;
     exports qu4lizz.taskscheduler.gui;

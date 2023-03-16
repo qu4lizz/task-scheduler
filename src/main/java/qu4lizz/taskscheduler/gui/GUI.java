@@ -29,14 +29,15 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        icon = new Image(GUI.class.getResource(ICON_PATH).toExternalForm());
 
         initializeColors();
 
-        mainScene(stage);
-
         TaskScheduler taskScheduler = schedulerTypeScene();
 
+        mainScene(stage);
 
+        stage.show();
     }
 
     private void initializeColors() throws IOException {
@@ -46,14 +47,12 @@ public class GUI extends Application {
         TEXT_COLOR = input.get(2).split("=")[1];
     }
     private void mainScene(Stage stage) throws IOException {
-        icon = new Image(GUI.class.getResource(ICON_PATH).toExternalForm());
 
         FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(FXML_PATH));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.getIcons().add(icon);
         stage.setTitle(TITLE);
         stage.setScene(scene);
-        stage.show();
     }
 
     private TaskScheduler schedulerTypeScene() throws IOException {

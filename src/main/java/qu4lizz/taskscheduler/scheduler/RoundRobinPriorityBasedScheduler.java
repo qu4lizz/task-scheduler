@@ -6,10 +6,10 @@ import qu4lizz.taskscheduler.task.Task;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TimeSliceTaskScheduler extends FIFOTaskScheduler {
+public class RoundRobinPriorityBasedScheduler extends FIFOTaskScheduler {
     private final int timeSlice;
 
-    public TimeSliceTaskScheduler(int numOfConcurrentTasks, int timeSlice) {
+    public RoundRobinPriorityBasedScheduler(int numOfConcurrentTasks, int timeSlice) {
         super(numOfConcurrentTasks);
         this.timeSlice = timeSlice;
     }

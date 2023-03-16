@@ -1,5 +1,7 @@
 package qu4lizz.taskscheduler.resource;
 
+import qu4lizz.taskscheduler.exceptions.CycleException;
+import qu4lizz.taskscheduler.exceptions.InvalidRequestException;
 import qu4lizz.taskscheduler.task.Task;
 import qu4lizz.taskscheduler.utils.Graph;
 
@@ -8,7 +10,7 @@ import java.awt.*;
 import java.lang.reflect.*;
 
 public class Resource {
-    private static Graph graph = new Graph();
+    private static Graph<Task> graph = new Graph();
     private String resourceName;
     private Integer ownerPriority = null;
     private Task owner = null;
@@ -19,7 +21,7 @@ public class Resource {
     }
 
     // Priority Ceiling Protocol
-    public void tryLock(Task task) {
+    public void tryLock(Task task) throws InvalidRequestException, CycleException {
         boolean status = false;
         synchronized (this) {
             // resource is locked
@@ -42,13 +44,13 @@ public class Resource {
         // da se izbjegne lock u lock-u, jer ako je resurs zauzet zadatak koji ga je trazio mora da ceka na resurs, slicno pauzi, wait
         if (status) {
             // zadatak zaustavlja izvrsavanje dok ne dobije resurs
-            task.blockForResourse();
+            task.blockForResource();
             // on postaje novi vlasnik resursa
             this.owner = task;
         }
     }
 
-    public void unlock() {
+    public void unlock() throws InvalidRequestException {
         synchronized (this) {
             // ako je resurs zauzet, oslobodimo ga i damo ga sledecem zadatku ako ga ima
             if (owner != null) {
@@ -62,7 +64,7 @@ public class Resource {
                 if (!waitingForResource.isEmpty()) {
                     Task task = waitingForResource.poll();
                     // taj zadatak vise ne ceka, grana od njega ne postoji
-                    graph.removeTransition(task);
+                    graph.removeNode(task);
                     // pozivamo handler da se zadatak nastavi
                     task.unblockForResource();
                 }
