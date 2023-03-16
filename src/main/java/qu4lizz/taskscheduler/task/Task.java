@@ -6,18 +6,18 @@ import qu4lizz.taskscheduler.utils.Utils;
 public class Task {
     private State state = State.READY_FOR_SCHEDULE;
     private final UserTask userTask;
-    private final Object stateLock = new Object();
     private final Thread thread;
     private Action onFinishedOrKilled;
     private Action onPaused;
     private Action onContinue;
     private Action onContextSwitch;
     private Action onStarted;
-
+    private final Object stateLock = new Object();
     private final Object pauseLock = new Object();
     private final Object waitForFinishLock = new Object();
     private final Object finishLock = new Object();
-    public final Object contextSwitchLock = new Object();
+    private final Object contextSwitchLock = new Object();
+    private final Object resourceLock = new Object();
 
     public interface Action {
         void act(Task task) throws InvalidRequestException;
@@ -31,6 +31,8 @@ public class Task {
         CONTINUE_REQUESTED,
         CONTEXT_SWITCH_REQUESTED,
         CONTEXT_SWITCHED,
+        WAITING_FOR_RESOURCE,
+        CONTINUE_AFTER_RESOURCE, // TODO: rename to something better (maybe just CONTINUE)
         FINISHED,
         KILL_REQUESTED,
         KILLED
@@ -57,6 +59,7 @@ public class Task {
     public int getPriority() {
         return userTask.getPriority();
     }
+    public void setPriority(int priority) { userTask.setPriority(priority); }
     public Object getStateLock() {
         return stateLock;
     }
@@ -97,6 +100,12 @@ public class Task {
                     state = State.RUNNING;
                     synchronized (contextSwitchLock) {
                         contextSwitchLock.notify();
+                    }
+                }
+                case CONTINUE_AFTER_RESOURCE -> {
+                    state = State.RUNNING;
+                    synchronized (resourceLock) {
+                        resourceLock.notify();
                     }
                 }
                 default -> throw new InvalidRequestException("Task is not ready for start");
@@ -160,6 +169,32 @@ public class Task {
                 }
             } else {
                 throw new IllegalStateException("Task can't finish");
+            }
+        }
+    }
+
+    public void blockForResource() throws InvalidRequestException {
+        synchronized (stateLock) {
+            if (state == State.RUNNING) {
+                state = State.WAITING_FOR_RESOURCE;
+                onPaused.act(this);
+            } else {
+                throw new InvalidRequestException("Task is not ready for blocking");
+            }
+        }
+        synchronized (resourceLock) {
+            try {
+                resourceLock.wait();
+            } catch (InterruptedException ignore) { }
+        }
+    }
+    public void unblockForResource() throws InvalidRequestException {
+        synchronized (stateLock) {
+            if (state == State.WAITING_FOR_RESOURCE) {
+                state = State.CONTINUE_AFTER_RESOURCE;
+                onContinue.act(this);
+            } else {
+                throw new InvalidRequestException("Task is not ready for unblocking");
             }
         }
     }

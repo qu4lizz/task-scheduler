@@ -108,6 +108,7 @@ public abstract class UserTask implements ITask {
 
     public final String getName() { return name; }
     public final int getPriority() { return priority; }
+    public void setPriority(int priority) { this.priority = priority; }
     public final String getStartDate() { return startDate; }
     public final String getEndDate() { return endDate; }
     public final Task.State getState() { return task.getState(); }

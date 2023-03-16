@@ -1,6 +1,6 @@
 package qu4lizz.taskscheduler.utils;
 
-import qu4lizz.taskscheduler.exceptions.DeadlockException;
+import qu4lizz.taskscheduler.exceptions.CycleException;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,12 +8,12 @@ import java.util.HashSet;
 public class Graph<T> {
     private HashMap<T, HashSet<T>> graph = new HashMap<>();
 
-    public void addTransition(T from, T to) throws DeadlockException {
+    public void addTransition(T from, T to) throws CycleException {
         if (!graph.containsKey(from))
             graph.put(from, new HashSet<>());
         graph.get(from).add(to);
         if (isCyclic(from, new HashSet<>(), new HashSet<>()))
-            throw new DeadlockException();
+            throw new CycleException("Cycle detected");
     }
 
     public void removeTransition(T from, T to) {
