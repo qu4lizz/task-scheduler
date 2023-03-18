@@ -5,12 +5,12 @@
      -fx-alignment: center;
      -fx-text-alignment: center;
      -fx-font-family: "JetBrains Mono Medium Nerd Font Complete Mono";
-     -fx-font-size: 16px}
+     -fx-font-size: 18px}
  .choice-box .menu-item:focused > .label { -fx-text-fill: #E0C097;
      -fx-alignment: center;
      -fx-text-alignment: center;
      -fx-font-family: "JetBrains Mono Medium Nerd Font Complete Mono";
-     -fx-font-size: 16px}
+     -fx-font-size: 20px}
  .choice-box {
        -fx-background-color: #3b484d;
        -fx-mark-color: #fc8789;

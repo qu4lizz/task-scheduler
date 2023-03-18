@@ -12,8 +12,9 @@ public class Graph<T> {
         if (!graph.containsKey(from))
             graph.put(from, new HashSet<>());
         graph.get(from).add(to);
-        if (isCyclic(from, new HashSet<>(), new HashSet<>()))
-            throw new CycleException("Cycle detected");
+        if (isCyclic(from, new HashSet<>(), new HashSet<>())) {
+            graph.get(from).remove(to);
+        }
     }
 
     public void removeNode(T val) {

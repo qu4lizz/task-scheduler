@@ -54,7 +54,7 @@ public abstract class TaskScheduler {
     }
 
     public void addTask(Task task, boolean shouldStart) throws InvalidRequestException {
-        addTaskActions(task);
+        addTaskConsumers(task);
         synchronized (lock) {
             if (!shouldStart) {
                 waitingTasksWithoutStartSignal.add(task);
@@ -94,8 +94,8 @@ public abstract class TaskScheduler {
             }
         }
     }
-    protected void addTaskActions(Task task) {
-        task.setActions(this::handleTaskContinue, this::handleTaskFinishedOrKilled, this::handleTaskPaused,
+    protected void addTaskConsumers(Task task) {
+        task.setConsumers(this::handleTaskContinue, this::handleTaskFinishedOrKilled, this::handleTaskPaused,
                 this::handleTaskContextSwitch, this::handleTaskStated);
     }
     protected void startTask(Task task) throws InvalidRequestException {

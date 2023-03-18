@@ -35,7 +35,7 @@ public class GUI extends Application {
 
         TaskScheduler taskScheduler = schedulerTypeScene();
 
-        mainScene(stage);
+        mainScene(stage, taskScheduler);
 
         stage.show();
     }
@@ -46,13 +46,14 @@ public class GUI extends Application {
         BUTTON_COLOR = input.get(1).split("=")[1];
         TEXT_COLOR = input.get(2).split("=")[1];
     }
-    private void mainScene(Stage stage) throws IOException {
-
+    private void mainScene(Stage stage, TaskScheduler taskScheduler) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(FXML_PATH));
         Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
         stage.getIcons().add(icon);
         stage.setTitle(TITLE);
         stage.setScene(scene);
+        GUIController controller = fxmlLoader.getController();
+        controller.setTaskScheduler(taskScheduler);
     }
 
     private TaskScheduler schedulerTypeScene() throws IOException {

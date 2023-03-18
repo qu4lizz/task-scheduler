@@ -1,6 +1,5 @@
 package qu4lizz.taskscheduler.task;
 
-import qu4lizz.taskscheduler.exceptions.InvalidRequestException;
 import qu4lizz.taskscheduler.utils.Utils;
 
 /**
@@ -10,7 +9,7 @@ import qu4lizz.taskscheduler.utils.Utils;
  */
 public abstract class UserTask implements ITask {
     private final Task task;
-    private String name;
+    private final String name;
     private String startDate;
     private String endDate;
     private int priority;
@@ -108,18 +107,20 @@ public abstract class UserTask implements ITask {
 
     public final String getName() { return name; }
     public final int getPriority() { return priority; }
-    public void setPriority(int priority) { this.priority = priority; }
+    public final void setPriority(int priority) { this.priority = priority; }
     public final String getStartDate() { return startDate; }
     public final String getEndDate() { return endDate; }
     public final Task.State getState() { return task.getState(); }
+    public final int getNumOfThreads() { return numOfThreads; }
+    public final double getProgress() { return task.getProgress(); }
+    public final void setProgress(double progress) { task.setProgress(progress); }
 
-
-    public final void checkForPause() throws InvalidRequestException {
+    public final void checkForPause() {
         boolean shouldPause = false;
         synchronized (task.getStateLock()) {
             if (task.getState() == Task.State.PAUSE_REQUESTED) {
                 task.setState(Task.State.PAUSED);
-                task.getOnPaused().act(task);
+                task.getOnPaused().accept(task);
                 shouldPause = true;
             }
         }
@@ -131,21 +132,21 @@ public abstract class UserTask implements ITask {
             }
         }
     }
-    public final void checkForKill() throws InvalidRequestException {
+    public final void checkForKill() {
         synchronized (task.getStateLock()) {
             if (task.getState() == Task.State.KILL_REQUESTED) {
                 task.setState(Task.State.KILLED);
-                task.getOnFinishedOrKilled().act(task);
+                task.getOnFinishedOrKilled().accept(task);
             }
         }
     }
 
-    public final void checkForContextSwitch() throws InvalidRequestException {
+    public final void checkForContextSwitch() {
         boolean shouldSwitch = false;
         synchronized (task.getStateLock()) {
             if (task.getState() == Task.State.CONTEXT_SWITCH_REQUESTED) {
                 task.setState(Task.State.CONTEXT_SWITCHED);
-                task.getOnContextSwitch().act(task);
+                task.getOnContextSwitch().accept(task);
                 shouldSwitch = true;
             }
         }

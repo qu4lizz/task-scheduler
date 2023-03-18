@@ -2,7 +2,6 @@ package qu4lizz.taskscheduler.gui;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
@@ -10,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import qu4lizz.taskscheduler.scheduler.*;
 
 import java.net.URL;
@@ -32,12 +30,9 @@ public class SchedulerType implements Initializable {
     private Stage stage;
     public void setStage(Stage stage) {
         this.stage = stage;
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                Platform.exit();
-                System.exit(0);
-            }
+        stage.setOnCloseRequest(windowEvent -> {
+            Platform.exit();
+            System.exit(0);
         });
     }
     public TaskScheduler getTaskScheduler() {
@@ -58,18 +53,11 @@ public class SchedulerType implements Initializable {
     void startTaskSchedulerOnMouseClicked(MouseEvent event) { // this and closeOnMouseClicked
         if (checks()) {
             switch (schedulerType.getValue()) {
-                case "FIFO":
-                    taskScheduler = new FIFOTaskScheduler(numOfTasksInt);
-                    break;
-                case "Priority":
-                    taskScheduler = new PriorityTaskScheduler(numOfTasksInt);
-                    break;
-                case "Priority Based Round Robin":
-                    taskScheduler = new RoundRobinPriorityBasedScheduler(numOfTasksInt, timeSliceInt);
-                    break;
-                case "Preemptive Priority":
-                    taskScheduler = new PreemptiveTaskScheduler(numOfTasksInt);
-                    break;
+                case "FIFO" -> taskScheduler = new FIFOTaskScheduler(numOfTasksInt);
+                case "Priority" -> taskScheduler = new PriorityTaskScheduler(numOfTasksInt);
+                case "Priority Based Round Robin" ->
+                        taskScheduler = new RoundRobinPriorityBasedScheduler(numOfTasksInt, timeSliceInt);
+                case "Preemptive Priority" -> taskScheduler = new PreemptiveTaskScheduler(numOfTasksInt);
             }
             stage.close();
         }
@@ -77,22 +65,14 @@ public class SchedulerType implements Initializable {
 
     private void getSchedulerType(ActionEvent event) {
         switch (schedulerType.getValue()) {
-            case "FIFO":
+            case "FIFO", "Priority", "Preemptive Priority" -> {
                 timeSliceField.setVisible(false);
                 timeSliceLabel.setVisible(false);
-                break;
-            case "Priority":
-                timeSliceField.setVisible(false);
-                timeSliceLabel.setVisible(false);
-                break;
-            case "Priority Based Round Robin":
+            }
+            case "Priority Based Round Robin" -> {
                 timeSliceField.setVisible(true);
                 timeSliceLabel.setVisible(true);
-                break;
-            case "Preemptive Priority":
-                timeSliceField.setVisible(false);
-                timeSliceLabel.setVisible(false);
-                break;
+            }
         }
     }
 

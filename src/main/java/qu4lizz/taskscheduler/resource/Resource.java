@@ -6,66 +6,58 @@ import qu4lizz.taskscheduler.task.Task;
 import qu4lizz.taskscheduler.utils.Graph;
 
 import java.util.*;
-import java.awt.*;
-import java.lang.reflect.*;
 
 public class Resource {
-    private static Graph<Task> graph = new Graph();
-    private String resourceName;
-    private Integer ownerPriority = null;
-    private Task owner = null;
-    private PriorityQueue<Task> waitingForResource = new PriorityQueue<Task>((x, y) -> x.getPriority() - y.getPriority());
+    private Graph<Task> graph = new Graph();
+    private String id;
+    private Integer holderPriority = null;
+    private Task holder = null;
+    private PriorityQueue<Task> waitingQueue = new PriorityQueue<Task>((x, y) -> x.getPriority() - y.getPriority());
+    private final Object lock = new Object();
 
-    public Resource(String resourceName) {
-        this.resourceName = resourceName;
+    public Resource(String id) {
+        this.id = id;
     }
 
     // Priority Ceiling Protocol
-    public void tryLock(Task task) throws InvalidRequestException, CycleException {
+    public void tryLock(Task task) throws InvalidRequestException {
         boolean status = false;
-        synchronized (this) {
-            // resource is locked
-            if (this.owner != null) {
-                graph.addTransition(task, owner);
-                // grana je usmjerena od zadatka koji ceka prema zadatku na koji ceka da oslobodi resurs
-                waitingForResource.add(task);
-                // inverzija prioriteta, prioritet manjeg zadatke se pamti i postavlja se na prioritet veceg onog koji zeli resurs
-                if (task.getPriority() > owner.getPriority()) {
-                    ownerPriority = owner.getPriority();
-                    // a trenutnom vlasniku resursa dajemo veci prioritet
-                    owner.setPriority(task.getPriority());
+        synchronized (lock) {
+            if (this.holder != null) {
+                graph.addTransition(task, holder);
+                waitingQueue.add(task);
+
+                if (task.getPriority() > holder.getPriority()) {
+                    holderPriority = holder.getPriority();
+                    holder.setPriority(task.getPriority());
                 }
                 status = true;
-            } // resurs nije zauzet
+            }
             else {
-                this.owner = task;
+                this.holder = task;
             }
         }
-        // da se izbjegne lock u lock-u, jer ako je resurs zauzet zadatak koji ga je trazio mora da ceka na resurs, slicno pauzi, wait
         if (status) {
-            // zadatak zaustavlja izvrsavanje dok ne dobije resurs
+            // stop executing while waiting for resource
             task.blockForResource();
-            // on postaje novi vlasnik resursa
-            this.owner = task;
+            this.holder = task;
         }
     }
 
     public void unlock() throws InvalidRequestException {
-        synchronized (this) {
-            // ako je resurs zauzet, oslobodimo ga i damo ga sledecem zadatku ako ga ima
-            if (owner != null) {
-                // ako je != null znaci da se prioritet mijenjao i vratimo ga, zapamcen
-                if (this.ownerPriority != null) {
-                    this.owner.setPriority(this.ownerPriority); // vratimo zapamcenu vrijednost prioriteta
-                    this.ownerPriority = null;
+        synchronized (lock) {
+            // owner == null, priority changed
+            if (holder != null) {
+                if (this.holderPriority != null) {
+                    this.holder.setPriority(this.holderPriority);
+                    this.holderPriority = null;
                 }
-                this.owner = null;
-                // ako neko ceka na resurs, uzima se sledeci na redu
-                if (!waitingForResource.isEmpty()) {
-                    Task task = waitingForResource.poll();
-                    // taj zadatak vise ne ceka, grana od njega ne postoji
+                this.holder = null;
+
+                if (!waitingQueue.isEmpty()) {
+                    Task task = waitingQueue.poll();
                     graph.removeNode(task);
-                    // pozivamo handler da se zadatak nastavi
+                    // start executing again
                     task.unblockForResource();
                 }
             }

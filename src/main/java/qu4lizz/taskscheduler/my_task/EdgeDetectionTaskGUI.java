@@ -9,11 +9,9 @@ import qu4lizz.taskscheduler.gui.UserTaskGUI;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 public class EdgeDetectionTaskGUI extends UserTaskGUI {
-
     private final Label imagesLabel = new Label("Images to Process:");
     private final Button chooseImagesButton = new Button("Choose Images");
     private final Label outputLabel = new Label("Output Directory:");
@@ -21,15 +19,14 @@ public class EdgeDetectionTaskGUI extends UserTaskGUI {
     private List<File> images;
     private File output;
 
-    public EdgeDetectionTaskGUI(UserTaskGUI userTaskGUI) {
-        super(userTaskGUI);
+    public EdgeDetectionTaskGUI() {
         addNewInput(imagesLabel, chooseImagesButton);
         addNewInput(outputLabel, chooseOutputButton);
         chooseImagesButton.setOnMouseClicked(this::chooseImagesOnMouseClicked);
         chooseOutputButton.setOnMouseClicked(this::chooseOutputOnMouseClicked);
     }
 
-    private void chooseOutputOnMouseClicked (MouseEvent mouseEvent) {
+    private void chooseOutputOnMouseClicked(MouseEvent mouseEvent) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Choose Output Directory");
         output = directoryChooser.showDialog(chooseOutputButton.getScene().getWindow());
@@ -49,37 +46,35 @@ public class EdgeDetectionTaskGUI extends UserTaskGUI {
             String[] imgSrc = (String[]) images.toArray();
             String outputPath = output.getAbsolutePath();
             switch (getConstructorType()) {
-                case NAME_NUM -> {
-                    setTask(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(numberField.getText()), imgSrc, outputPath));
-                }
-                case NAME_PRI_NUM -> {
-                    setTask(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(priorityField.getText()),
-                            Integer.parseInt(numberField.getText()), imgSrc, outputPath));
-                }
-                case NAME_START_NUM -> {
-                    setTask(new EdgeDetectionTask(nameField.getText(), startDateField.getText(),
-                            Integer.parseInt(numberField.getText()), imgSrc, outputPath));
-                }
-                case NAME_PRI_START_NUM -> {
-                    setTask(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(priorityField.getText()),
-                            startDateField.getText(), Integer.parseInt(numberField.getText()), imgSrc, outputPath));
-                }
-                case NAME_START_END_NUM -> {
-                    setTask(new EdgeDetectionTask(nameField.getText(), startDateField.getText(),
-                            endTimeField.getText(), Integer.parseInt(numberField.getText()), imgSrc, outputPath));
-                }
-                case NAME_PRI_START_END_NUM -> {
-                    setTask(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(priorityField.getText()),
-                            startDateField.getText(), endTimeField.getText(), Integer.parseInt(numberField.getText()), imgSrc, outputPath));
-                }
-                case NAME_START_TIME_NUM -> {
-                    setTask(new EdgeDetectionTask(nameField.getText(), startDateField.getText(),
-                            Integer.parseInt(numberField.getText()), Integer.parseInt(numberField.getText()), imgSrc, outputPath));
-                }
-                case NAME_PRI_START_TIME_NUM -> {
-                    setTask(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(priorityField.getText()),
-                            startDateField.getText(), Integer.parseInt(numberField.getText()), Integer.parseInt(numberField.getText()), imgSrc, outputPath));
-                }
+                case NAME_NUM ->
+                    setTaskSpecification(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(numberField.getText()),
+                            imgSrc, outputPath), startCheckbox.isSelected());
+                case NAME_PRI_NUM ->
+                    setTaskSpecification(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(priorityField.getText()),
+                            Integer.parseInt(numberField.getText()), imgSrc, outputPath), startCheckbox.isSelected());
+                case NAME_START_NUM ->
+                    setTaskSpecification(new EdgeDetectionTask(nameField.getText(), startDateField.getText(),
+                            Integer.parseInt(numberField.getText()), imgSrc, outputPath), startCheckbox.isSelected());
+                case NAME_PRI_START_NUM ->
+                    setTaskSpecification(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(priorityField.getText()),
+                            startDateField.getText(), Integer.parseInt(numberField.getText()),
+                            imgSrc, outputPath), startCheckbox.isSelected());
+                case NAME_START_END_NUM ->
+                    setTaskSpecification(new EdgeDetectionTask(nameField.getText(), startDateField.getText(),
+                            endTimeField.getText(), Integer.parseInt(numberField.getText()),
+                            imgSrc, outputPath), startCheckbox.isSelected());
+                case NAME_PRI_START_END_NUM ->
+                    setTaskSpecification(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(priorityField.getText()),
+                            startDateField.getText(), endTimeField.getText(), Integer.parseInt(numberField.getText()),
+                            imgSrc, outputPath), startCheckbox.isSelected());
+                case NAME_START_TIME_NUM ->
+                    setTaskSpecification(new EdgeDetectionTask(nameField.getText(), startDateField.getText(),
+                            Integer.parseInt(numberField.getText()), Integer.parseInt(numberField.getText()),
+                            imgSrc, outputPath), startCheckbox.isSelected());
+                case NAME_PRI_START_TIME_NUM ->
+                    setTaskSpecification(new EdgeDetectionTask(nameField.getText(), Integer.parseInt(priorityField.getText()),
+                            startDateField.getText(), Integer.parseInt(numberField.getText()), Integer.parseInt(numberField.getText()),
+                            imgSrc, outputPath), startCheckbox.isSelected());
             }
         }
     }

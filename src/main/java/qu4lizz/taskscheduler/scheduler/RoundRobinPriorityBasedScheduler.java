@@ -28,11 +28,7 @@ public class RoundRobinPriorityBasedScheduler extends FIFOTaskScheduler {
             @Override
             public void run() {
                 if (task.getState() == Task.State.RUNNING) {
-                    try {
-                        task.requestContextSwitch();
-                    } catch (InvalidRequestException e) {
-                        throw new RuntimeException(e);
-                    }
+                    task.requestContextSwitch();
                 }
             }
         };
