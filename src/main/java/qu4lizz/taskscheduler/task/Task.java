@@ -17,7 +17,6 @@ public class Task {
     private final Object stateLock = new Object();
     private final Object pauseLock = new Object();
     private final Object waitForFinishLock = new Object();
-    private final Object finishLock = new Object();
     private final Object contextSwitchLock = new Object();
     private final Object resourceLock = new Object();
     private double progress; // = 0
@@ -50,9 +49,15 @@ public class Task {
         });
     }
 
-    public State getState() { return state; }
+    public State getState() {
+        synchronized (stateLock) {
+            return state;
+        }
+    }
     public void setState(State state) {
-        this.state = state;
+        synchronized (stateLock) {
+            this.state = state;
+        }
     }
     public int getPriority() {
         return userTask.getPriority();
@@ -78,7 +83,6 @@ public class Task {
     }
     public Object getPauseLock() { return pauseLock; }
     public Object getWaitForFinishLock() { return waitForFinishLock; }
-    public Object getFinishLock() { return finishLock; }
     public double getProgress() { return progress; }
     public void setProgress(double progress) { this.progress = progress; }
 
@@ -92,7 +96,7 @@ public class Task {
                 }
                 case CONTINUE_REQUESTED -> {
                     state = State.RUNNING;
-                    onContinue.accept(this);
+                    //onContinue.accept(this);
                     synchronized (pauseLock) {
                         pauseLock.notify();
                     }
@@ -153,7 +157,10 @@ public class Task {
                     state = State.READY_FOR_SCHEDULE;
                     onStarted.accept(this);
                 }
-                case PAUSED -> state = State.CONTINUE_REQUESTED;
+                case PAUSED -> {
+                    state = State.CONTINUE_REQUESTED;
+                    onContinue.accept(this);
+                }
                 case PAUSE_REQUESTED -> state = State.RUNNING;
                 case RUNNING, CONTINUE_REQUESTED -> { }
                 default -> throw new RuntimeException("Task is not ready for continue");
@@ -163,15 +170,34 @@ public class Task {
 
     public void finish() {
         synchronized (stateLock) {
-            if (state == State.RUNNING) {
-                state = State.FINISHED;
-                onFinishedOrKilled.accept(this);
-                synchronized (waitForFinishLock) {
-                    waitForFinishLock.notifyAll();
+            switch (state) {
+                case RUNNING -> {
+                    state = State.FINISHED;
+                    onFinishedOrKilled.accept(this);
+                    synchronized (waitForFinishLock) {
+                        waitForFinishLock.notifyAll();
+                    }
                 }
-            } else {
-                throw new RuntimeException("Task can't finish");
+                case FINISHED, KILLED -> {
+                    return;
+                }
+                default -> {
+                    throw new RuntimeException("Task can't finish");
+                }
             }
+        }
+    }
+
+    public final void waitForFinish() {
+        synchronized (waitForFinishLock) {
+            synchronized (stateLock) {
+                if (state == Task.State.FINISHED) {
+                    return;
+                }
+            }
+            try {
+                waitForFinishLock.wait();
+            } catch (InterruptedException ignore) { }
         }
     }
 

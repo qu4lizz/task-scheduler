@@ -60,7 +60,7 @@ public class EdgeDetectionTask extends UserTask {
         this.outputDir = outputDir;
     }
 
-    public EdgeDetectionTask (String name, int priority, String startDate, int time, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+    public EdgeDetectionTask(String name, int priority, String startDate, int time, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
         super(name, priority, startDate, time, numOfThreads);
         this.outputDir = outputDir;
         readImages(numOfThreads, paths);
@@ -171,14 +171,14 @@ public class EdgeDetectionTask extends UserTask {
         }
     }
 
-    private long calculateChunk () {
+    private long calculateChunk() {
         int sum = 0;
         for(BufferedImage image : sourceImages)
             sum += image.getHeight() * image.getWidth();
         return (long) Math.ceil((double) sum / threads.length);
     }
 
-    private BufferedImage[] detectEdges (BufferedImage[] images) {
+    private BufferedImage[] detectEdges(BufferedImage[] images) {
         BufferedImage[] result = new BufferedImage[images.length];
         for(int i = 0; i < images.length; i++) {
             result[i] = detectEdges(images[i]);
@@ -186,7 +186,7 @@ public class EdgeDetectionTask extends UserTask {
         return result;
     }
 
-    private BufferedImage detectEdges (BufferedImage image) {
+    private BufferedImage detectEdges(BufferedImage image) {
         int[][] pixels = getPixels(image);
         int[][] grayscale = toGrayscale(pixels);
         int[][] blur = applyGaussianBlur(grayscale, 3);
@@ -194,7 +194,7 @@ public class EdgeDetectionTask extends UserTask {
         return getImage(edges, image.getType());
     }
 
-    private BufferedImage[] getProcessedImages (Map<Integer, ArrayList<Integer>> imagesPerThread, ArrayList<BufferedImage> chunkedImages) {
+    private BufferedImage[] getProcessedImages(Map<Integer, ArrayList<Integer>> imagesPerThread, ArrayList<BufferedImage> chunkedImages) {
         BufferedImage[] chunkedResult = new BufferedImage[chunkedImages.size()];
         AtomicReferenceArray<BufferedImage[]> tmp = new AtomicReferenceArray<>(threads.length);
         for(int i = 0; i < threads.length; i++) {

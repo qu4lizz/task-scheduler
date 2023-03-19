@@ -15,7 +15,7 @@ public class RoundRobinPriorityBasedScheduler extends FIFOTaskScheduler {
     }
 
     @Override
-    protected void startTask(Task task) throws InvalidRequestException {
+    protected void startTask(Task task) {
         super.startTask(task);
         timerStart(task);
     }

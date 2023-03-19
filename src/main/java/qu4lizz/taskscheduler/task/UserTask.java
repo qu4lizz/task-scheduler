@@ -115,6 +115,10 @@ public abstract class UserTask implements ITask {
     public final double getProgress() { return task.getProgress(); }
     public final void setProgress(double progress) { task.setProgress(progress); }
 
+    public Task getTask() {
+        return task;
+    }
+
     public final void checkForPause() {
         boolean shouldPause = false;
         synchronized (task.getStateLock()) {
@@ -156,19 +160,6 @@ public abstract class UserTask implements ITask {
                     task.getContextSwitchLock().wait();
                 } catch (InterruptedException ignore) { }
             }
-        }
-    }
-
-    public final void waitForFinish() {
-        synchronized (task.getWaitForFinishLock()) {
-            synchronized (task.getStateLock()) {
-                if (task.getState() == Task.State.FINISHED) {
-                    return;
-                }
-            }
-            try {
-                task.getWaitForFinishLock().wait();
-            } catch (InterruptedException ignore) { }
         }
     }
 

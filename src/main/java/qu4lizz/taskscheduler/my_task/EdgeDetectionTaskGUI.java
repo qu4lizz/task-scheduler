@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class EdgeDetectionTaskGUI extends UserTaskGUI {
-    private final Label imagesLabel = new Label("Images to Process:");
+    private final Label imagesLabel = new Label("Images to process:");
     private final Button chooseImagesButton = new Button("Choose Images");
-    private final Label outputLabel = new Label("Output Directory:");
+    private final Label outputLabel = new Label("Output directory:");
     private final Button chooseOutputButton = new Button("Choose Output Directory");
     private List<File> images;
     private File output;

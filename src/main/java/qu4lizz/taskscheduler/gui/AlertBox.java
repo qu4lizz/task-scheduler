@@ -31,7 +31,7 @@ public class AlertBox {
         label.setTextAlignment(TextAlignment.CENTER);
 
         Button closeButton = new Button("OK");
-        closeButton.setOnConsumer(e -> window.close());
+        closeButton.setOnAction(e -> window.close());
         closeButton.setStyle("-fx-background-color: " + GUI.BUTTON_COLOR);
         closeButton.setTextFill(Color.web(GUI.TEXT_COLOR));
         closeButton.setFont(Font.font("IBM Plex Serif Medm", FontPosture.REGULAR, 22));

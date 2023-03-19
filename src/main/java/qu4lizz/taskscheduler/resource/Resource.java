@@ -1,18 +1,16 @@
 package qu4lizz.taskscheduler.resource;
 
-import qu4lizz.taskscheduler.exceptions.CycleException;
-import qu4lizz.taskscheduler.exceptions.InvalidRequestException;
 import qu4lizz.taskscheduler.task.Task;
 import qu4lizz.taskscheduler.utils.Graph;
 
-import java.util.*;
+import java.util.PriorityQueue;
 
 public class Resource {
-    private Graph<Task> graph = new Graph();
-    private String id;
+    private final Graph<Task> graph = new Graph<>();
+    private final String id;
     private Integer holderPriority = null;
     private Task holder = null;
-    private PriorityQueue<Task> waitingQueue = new PriorityQueue<Task>((x, y) -> x.getPriority() - y.getPriority());
+    private final PriorityQueue<Task> waitingQueue = new PriorityQueue<Task>((x, y) -> x.getPriority() - y.getPriority());
     private final Object lock = new Object();
 
     public Resource(String id) {
@@ -20,7 +18,7 @@ public class Resource {
     }
 
     // Priority Ceiling Protocol
-    public void tryLock(Task task) throws InvalidRequestException {
+    public void tryLock(Task task) {
         boolean status = false;
         synchronized (lock) {
             if (this.holder != null) {
@@ -44,7 +42,7 @@ public class Resource {
         }
     }
 
-    public void unlock() throws InvalidRequestException {
+    public void unlock() {
         synchronized (lock) {
             // owner == null, priority changed
             if (holder != null) {

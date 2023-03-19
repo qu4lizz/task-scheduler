@@ -8,12 +8,13 @@ import java.util.HashSet;
 public class Graph<T> {
     private HashMap<T, HashSet<T>> graph = new HashMap<>();
 
-    public void addTransition(T from, T to) throws CycleException {
+    public void addTransition(T from, T to) {
         if (!graph.containsKey(from))
             graph.put(from, new HashSet<>());
         graph.get(from).add(to);
         if (isCyclic(from, new HashSet<>(), new HashSet<>())) {
             graph.get(from).remove(to);
+            System.out.println("Deadlock");
         }
     }
 

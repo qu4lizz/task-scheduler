@@ -76,7 +76,7 @@ public class GUIController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
 
             // Add task to list
-            taskScheduler.addTask(new Task(newTask.getTask()), newTask.shouldStartImmediately());
+            taskScheduler.addTask(newTask.getTask(), newTask.shouldStartImmediately());
         } catch (Exception e) {
             e.printStackTrace();
         }

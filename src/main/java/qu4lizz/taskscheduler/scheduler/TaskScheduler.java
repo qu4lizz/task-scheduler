@@ -1,11 +1,15 @@
 package qu4lizz.taskscheduler.scheduler;
 
-import qu4lizz.taskscheduler.exceptions.InvalidRequestException;
 import qu4lizz.taskscheduler.task.Task;
+import qu4lizz.taskscheduler.task.UserTask;
 import qu4lizz.taskscheduler.utils.ConcurrentPriorityQueue;
 import qu4lizz.taskscheduler.utils.Utils;
+
 import java.util.HashSet;
 import java.util.Queue;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,10 +27,12 @@ public abstract class TaskScheduler {
         maxTasks = new AtomicInteger(numOfConcurrentTasks);
         activeTasks = new HashSet<>();
         tasksWithEndDate = new ConcurrentPriorityQueue<>((x, y) ->
-                Utils.dateDifference(y.getUserTask().getEndDate(), x.getUserTask().getEndDate()));
+                (int)Utils.dateDifferenceInSeconds(y.getUserTask().getEndDate(), x.getUserTask().getEndDate()));
+        waitingTasksToBeStarted = new ConcurrentLinkedQueue<>();
+        waitingTasksWithoutStartSignal = new HashSet<>();
 
         Thread killerThread = new Thread(() -> {
-            int timeToSleep = -1;
+            long timeToSleep = -1;
             while (enabled.get()) { // TODO: set to false when X is pressed
                 synchronized (killerLock) {
                     try {
@@ -41,19 +47,23 @@ public abstract class TaskScheduler {
                 synchronized (lock) {
                     for (var task : tasksWithEndDate) {
                         if (task.isOutOfDate()) {
-                            try {
-                                handleTaskFinishedOrKilled(task);
-                            } catch (InvalidRequestException ignore) { }
+                            task.setState(Task.State.KILLED);
+                            handleTaskFinishedOrKilled(task);
                         }
                     }
                 }
-                timeToSleep = Utils.dateDifference(tasksWithEndDate.peek().getUserTask().getEndDate(), Utils.getCurrentDateAndTime());
+                timeToSleep = 1000 * Utils.dateDifferenceInSeconds(tasksWithEndDate.peek().getUserTask().getEndDate(), Utils.getCurrentDateAndTime());
             }
         });
         killerThread.start();
     }
+    public boolean isEmpty() { return   activeTasks.isEmpty() &&
+                                        waitingTasksToBeStarted.isEmpty() &&
+                                        waitingTasksWithoutStartSignal.isEmpty();
+    }
 
-    public void addTask(Task task, boolean shouldStart) throws InvalidRequestException {
+    public void addTask(UserTask userTask, boolean shouldStart) {
+        Task task = userTask.getTask();
         addTaskConsumers(task);
         synchronized (lock) {
             if (!shouldStart) {
@@ -62,10 +72,14 @@ public abstract class TaskScheduler {
             }
             else if (taskCanBeStarted(task) && shouldStart) {
                 startTask(task);
-
-            } else if (task.cannotBeStartedYet()) {
+            }
+            else if (task.cannotBeStartedYet() ||
+                    (task.getUserTask().getStartDate() == null && activeTasks.size() == maxTasks.get())) {
                 waitingTasksToBeStarted.add(task);
-            } else if (task.isOutOfDate()) {
+                if (task.cannotBeStartedYet())
+                    startInFuture(task);
+            }
+            else if (task.isOutOfDate()) {
                 handleTaskOutOfDate(task); // TODO: Do I need this?
             } else {
                 throw new RuntimeException("This should never happen");
@@ -73,7 +87,7 @@ public abstract class TaskScheduler {
         }
     }
 
-    protected void startNextTask() throws InvalidRequestException {
+    protected void startNextTask() {
         for (var nextTask : waitingTasksToBeStarted) {
             if (taskCanBeStarted(nextTask)) {
                 startTask(nextTask);
@@ -94,11 +108,22 @@ public abstract class TaskScheduler {
             }
         }
     }
+    private void startInFuture(Task task) {
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                startNextTask();
+            }
+        };
+        long timeToWait = 1000 * Utils.dateDifferenceInSeconds(Utils.getCurrentDateAndTime(), task.getUserTask().getStartDate());
+        timer.schedule(timerTask, timeToWait);
+    }
     protected void addTaskConsumers(Task task) {
         task.setConsumers(this::handleTaskContinue, this::handleTaskFinishedOrKilled, this::handleTaskPaused,
                 this::handleTaskContextSwitch, this::handleTaskStated);
     }
-    protected void startTask(Task task) throws InvalidRequestException {
+    protected void startTask(Task task) {
         activeTasks.add(task);
         task.start();
         if (task.getUserTask().getEndDate() != null && !tasksWithEndDate.contains(task)) {
@@ -112,19 +137,19 @@ public abstract class TaskScheduler {
         waitingTasksToBeStarted.remove(task);
         // TODO: Send notification to user
     }
-    protected void handleTaskStated(Task task) throws InvalidRequestException {
-        addTask(task, true);
+    protected void handleTaskStated(Task task) {
+        addTask(task.getUserTask(), true);
         waitingTasksWithoutStartSignal.remove(task);
     }
 
-    protected void handleTaskPaused(Task task) throws InvalidRequestException {
+    protected void handleTaskPaused(Task task){
         synchronized (lock) {
             activeTasks.remove(task);
             startNextTask();
         }
     }
 
-    protected void handleTaskContinue(Task task) throws InvalidRequestException {
+    protected void handleTaskContinue(Task task) {
         synchronized (lock) {
             if (taskCanBeStarted(task)) {
                 activeTasks.add(task);
@@ -139,14 +164,14 @@ public abstract class TaskScheduler {
             }
         }
     }
-    protected void handleTaskFinishedOrKilled(Task task) throws InvalidRequestException {
+    protected void handleTaskFinishedOrKilled(Task task) {
         synchronized (lock) {
             activeTasks.remove(task);
             startNextTask();
         }
     }
 
-    protected void handleTaskContextSwitch(Task task) throws InvalidRequestException {
+    protected void handleTaskContextSwitch(Task task) {
         synchronized (lock) {
             activeTasks.remove(task);
             startNextTask();
