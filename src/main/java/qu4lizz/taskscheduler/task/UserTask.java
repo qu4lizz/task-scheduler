@@ -163,4 +163,12 @@ public abstract class UserTask implements ITask {
         }
     }
 
+    public final void tryLock(String resourceId) {
+        task.getOnResourceAcquire().accept(task, resourceId);
+    }
+
+    public final void unlock(String resourceId) {
+        task.getOnResourceRelease().accept(resourceId);
+    }
+
 }

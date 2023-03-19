@@ -1,14 +1,12 @@
 package qu4lizz.taskscheduler.scheduler;
 
+import qu4lizz.taskscheduler.resource.Resource;
 import qu4lizz.taskscheduler.task.Task;
 import qu4lizz.taskscheduler.task.UserTask;
 import qu4lizz.taskscheduler.utils.ConcurrentPriorityQueue;
 import qu4lizz.taskscheduler.utils.Utils;
 
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,6 +20,7 @@ public abstract class TaskScheduler {
     protected ConcurrentPriorityQueue<Task> tasksWithEndDate;
     protected final Object killerLock = new Object();
     protected final AtomicBoolean enabled = new AtomicBoolean(true);
+    private final HashMap<String, Resource> resources = new HashMap<>();
 
     public TaskScheduler(int numOfConcurrentTasks) {
         maxTasks = new AtomicInteger(numOfConcurrentTasks);
@@ -70,7 +69,7 @@ public abstract class TaskScheduler {
                 waitingTasksWithoutStartSignal.add(task);
                 task.setState(Task.State.NOT_SCHEDULED);
             }
-            else if (taskCanBeStarted(task) && shouldStart) {
+            else if (taskCanBeStarted(task)) {
                 startTask(task);
             }
             else if (task.cannotBeStartedYet() ||
@@ -120,9 +119,15 @@ public abstract class TaskScheduler {
         timer.schedule(timerTask, timeToWait);
     }
     protected void addTaskConsumers(Task task) {
-        task.setConsumers(this::handleTaskContinue, this::handleTaskFinishedOrKilled, this::handleTaskPaused,
-                this::handleTaskContextSwitch, this::handleTaskStated);
+        task.setConsumers(  this::handleTaskContinue,
+                            this::handleTaskFinishedOrKilled,
+                            this::handleTaskPaused,
+                            this::handleTaskContextSwitch,
+                            this::handleTaskStated,
+                            this::handleResourceRelease,
+                            this::handleResourceAcquire);
     }
+
     protected void startTask(Task task) {
         activeTasks.add(task);
         task.start();
@@ -177,6 +182,20 @@ public abstract class TaskScheduler {
             startNextTask();
             waitingTasksToBeStarted.add(task);
         }
+    }
+
+    private void handleResourceAcquire(Task task, String resourceId) {
+        if (resources.containsKey(resourceId))
+            resources.get(resourceId).tryLock(task);
+    }
+
+    private void handleResourceRelease(String resourceId) {
+        if (resources.containsKey(resourceId))
+            resources.get(resourceId).unlock();
+    }
+
+    public final void addResource(Resource resource) {
+        resources.put(resource.getId(), resource);
     }
 
     protected boolean taskCanBeStarted(Task task) {

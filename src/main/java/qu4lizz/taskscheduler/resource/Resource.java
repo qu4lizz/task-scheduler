@@ -17,6 +17,10 @@ public class Resource {
         this.id = id;
     }
 
+    public String getId() {
+        return id;
+    }
+
     // Priority Ceiling Protocol
     public void tryLock(Task task) {
         boolean status = false;

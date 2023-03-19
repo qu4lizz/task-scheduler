@@ -1,12 +1,14 @@
 package qu4lizz.taskscheduler.tests;
 
 import org.junit.jupiter.api.Test;
+import qu4lizz.taskscheduler.resource.Resource;
 import qu4lizz.taskscheduler.scheduler.FIFOTaskScheduler;
 import qu4lizz.taskscheduler.scheduler.PreemptiveTaskScheduler;
 import qu4lizz.taskscheduler.task.Task;
 import qu4lizz.taskscheduler.task.UserTask;
 import qu4lizz.taskscheduler.utils.Utils;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TaskSchedulerTest {
@@ -21,8 +23,8 @@ public class TaskSchedulerTest {
         fifoTaskScheduler.addTask(task1, false);
         fifoTaskScheduler.addTask(task2, true);
 
-        assertTrue(task1.getState() == Task.State.NOT_SCHEDULED);
-        assertTrue(task2.getState() == Task.State.RUNNING);
+        assertSame(task1.getState(), Task.State.NOT_SCHEDULED);
+        assertSame(task2.getState(), Task.State.RUNNING);
     }
 
     @Test
@@ -35,13 +37,13 @@ public class TaskSchedulerTest {
         fifoTaskScheduler.addTask(task1, true);
         fifoTaskScheduler.addTask(task2, true);
 
-        assertTrue(task2.getState() == Task.State.READY_FOR_SCHEDULE);
+        assertSame(task2.getState(), Task.State.READY_FOR_SCHEDULE);
 
         task1.getTask().waitForFinish();
 
         Thread.sleep(300);
 
-        assertTrue(task2.getState() == Task.State.RUNNING);
+        assertSame(task2.getState(), Task.State.RUNNING);
 
     }
 
@@ -56,12 +58,12 @@ public class TaskSchedulerTest {
         task1.getTask().requestPause();
         Thread.sleep(200);
         System.out.println(task1.getState());
-        assertTrue(task1.getState() == Task.State.PAUSED);
+        assertSame(task1.getState(), Task.State.PAUSED);
 
         task1.getTask().requestContinueOrStart();
         Thread.sleep(300);
         System.out.println(task1.getState());
-        assertTrue(task1.getState() == Task.State.RUNNING);
+        assertSame(task1.getState(), Task.State.RUNNING);
     }
 
     @Test
@@ -74,7 +76,7 @@ public class TaskSchedulerTest {
 
         task1.getTask().requestKill();
         Thread.sleep(300);
-        assertTrue(task1.getState() == Task.State.KILLED);
+        assertSame(task1.getState(), Task.State.KILLED);
     }
 
     @Test
@@ -87,14 +89,14 @@ public class TaskSchedulerTest {
         preemptiveTaskScheduler.addTask(task1, true);
         Thread.sleep(100);
 
-        assertTrue(task1.getState() == Task.State.RUNNING);
-        assertTrue(task2.getState() == Task.State.READY_FOR_SCHEDULE);
+        assertSame(task1.getState(), Task.State.RUNNING);
+        assertSame(task2.getState(), Task.State.READY_FOR_SCHEDULE);
 
         preemptiveTaskScheduler.addTask(task2, true);
         Thread.sleep(400);
 
-        assertTrue(task1.getState() == Task.State.CONTEXT_SWITCHED);
-        assertTrue(task2.getState() == Task.State.RUNNING);
+        assertSame(task1.getState(), Task.State.CONTEXT_SWITCHED);
+        assertSame(task2.getState(), Task.State.RUNNING);
     }
 
     @Test
@@ -108,11 +110,11 @@ public class TaskSchedulerTest {
 
         fifoTaskScheduler.addTask(task1, true);
 
-        assertTrue(task1.getState() == Task.State.READY_FOR_SCHEDULE);
+        assertSame(task1.getState(), Task.State.READY_FOR_SCHEDULE);
         Thread.sleep(5000);
-        assertTrue(task1.getState() == Task.State.RUNNING);
+        assertSame(task1.getState(), Task.State.RUNNING);
         Thread.sleep(2000);
-        assertTrue(task1.getState() == Task.State.FINISHED);
+        assertSame(task1.getState(), Task.State.FINISHED);
     }
     // TODO: Test when task has startDate but doesn't start immediately
 
@@ -128,11 +130,11 @@ public class TaskSchedulerTest {
         fifoTaskScheduler.addTask(task1, true);
 
         Thread.sleep(500);
-        assertTrue(task1.getState() == Task.State.RUNNING);
+        assertSame(task1.getState(), Task.State.RUNNING);
 
         Thread.sleep(3000);
         System.out.println(task1.getState());
-        assertTrue(task1.getState() == Task.State.KILLED);
+        assertSame(task1.getState(), Task.State.KILLED);
         assertTrue(fifoTaskScheduler.isEmpty());
     }
 
@@ -147,9 +149,28 @@ public class TaskSchedulerTest {
         fifoTaskScheduler.addTask(task1, true);
 
         Thread.sleep(500);
-        assertTrue(task1.getState() == Task.State.RUNNING);
+        assertSame(task1.getState(), Task.State.RUNNING);
 
         Thread.sleep(2000);
-        assertTrue(task1.getState() == Task.State.KILLED);
+        assertSame(task1.getState(), Task.State.KILLED);
+    }
+
+    @Test
+    void resourceTest() throws InterruptedException {
+        FIFOTaskScheduler fifoTaskScheduler = new FIFOTaskScheduler(2);
+
+        Resource resource = new Resource("resource1");
+        fifoTaskScheduler.addResource(resource);
+
+        UserTask task1 = new DemoTask3("demo1", 1, 5);
+        UserTask task2 = new DemoTask3("demo2", 3, 5);
+
+        fifoTaskScheduler.addTask(task1, true);
+        fifoTaskScheduler.addTask(task2, true);
+
+        Thread.sleep(500);
+        assertSame(task1.getState(), Task.State.RUNNING);
+        assertSame(task2.getState(), Task.State.WAITING_FOR_RESOURCE);
+
     }
 }

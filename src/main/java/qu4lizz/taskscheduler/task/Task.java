@@ -3,6 +3,7 @@ package qu4lizz.taskscheduler.task;
 import qu4lizz.taskscheduler.utils.Utils;
 
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class Task {
@@ -14,6 +15,8 @@ public class Task {
     private Consumer<Task> onContinue;
     private Consumer<Task> onContextSwitch;
     private Consumer<Task> onStarted;
+    private BiConsumer<Task, String> onResourceAcquire;
+    private Consumer<String> onResourceRelease;
     private final Object stateLock = new Object();
     private final Object pauseLock = new Object();
     private final Object waitForFinishLock = new Object();
@@ -73,13 +76,22 @@ public class Task {
     public Consumer<Task> getOnPaused() { return onPaused; }
     public Consumer<Task> getOnFinishedOrKilled() { return onFinishedOrKilled; }
     public Consumer<Task> getOnContextSwitch() { return onContextSwitch; }
-    public void setConsumers(Consumer<Task> onContinue, Consumer<Task> onFinished, Consumer<Task> onPaused,
-                             Consumer<Task> onContextSwitch, Consumer<Task> onStarted) {
+
+    public BiConsumer<Task, String> getOnResourceAcquire() { return onResourceAcquire; }
+
+    public Consumer<String> getOnResourceRelease() { return onResourceRelease; }
+
+    public void setConsumers(Consumer<Task> onContinue, Consumer<Task> onFinished,
+                             Consumer<Task> onPaused, Consumer<Task> onContextSwitch,
+                             Consumer<Task> onStarted, Consumer<String> onResourceReleased,
+                             BiConsumer<Task, String> onResourceAcquired) {
         this.onContinue = onContinue;
         this.onFinishedOrKilled = onFinished;
         this.onPaused = onPaused;
         this.onContextSwitch = onContextSwitch;
         this.onStarted = onStarted;
+        this.onResourceAcquire = onResourceAcquired;
+        this.onResourceRelease = onResourceReleased;
     }
     public Object getPauseLock() { return pauseLock; }
     public Object getWaitForFinishLock() { return waitForFinishLock; }
@@ -96,7 +108,6 @@ public class Task {
                 }
                 case CONTINUE_REQUESTED -> {
                     state = State.RUNNING;
-                    //onContinue.accept(this);
                     synchronized (pauseLock) {
                         pauseLock.notify();
                     }
