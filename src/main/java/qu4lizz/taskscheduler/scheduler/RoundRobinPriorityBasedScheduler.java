@@ -21,7 +21,7 @@ public class RoundRobinPriorityBasedScheduler extends FIFOTaskScheduler {
     }
 
     private void timerStart(Task task) {
-        int timeBeforeContextSwitch = timeSlice * task.getPriority();
+        int timeBeforeContextSwitch = timeSlice * (11 - task.getPriority());
 
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {

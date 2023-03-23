@@ -21,7 +21,6 @@ public class Resource {
         return id;
     }
 
-    // Priority Ceiling Protocol
     public void tryLock(Task task) {
         boolean status = false;
         synchronized (lock) {

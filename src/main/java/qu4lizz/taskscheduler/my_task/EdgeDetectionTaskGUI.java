@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import qu4lizz.taskscheduler.gui.AlertBox;
 import qu4lizz.taskscheduler.gui.UserTaskGUI;
 
 import java.io.File;
@@ -43,7 +44,9 @@ public class EdgeDetectionTaskGUI extends UserTaskGUI {
     @Override
     public void createOnMouseClick(MouseEvent event) throws IOException, InterruptedException {
         if (validInput()) {
-            String[] imgSrc = (String[]) images.toArray();
+            String[] imgSrc = new String[images.size()];
+            for (int i = 0; i < images.size(); i++)
+                imgSrc[i] = images.get(i).getAbsolutePath();
             String outputPath = output.getAbsolutePath();
             switch (getConstructorType()) {
                 case NAME_NUM ->
@@ -77,5 +80,21 @@ public class EdgeDetectionTaskGUI extends UserTaskGUI {
                             imgSrc, outputPath), startCheckbox.isSelected());
             }
         }
+    }
+
+    @Override
+    protected boolean validInput() {
+        if(super.validInput()) {
+            if (images == null || images.isEmpty()) {
+                AlertBox.display("Error", "No images selected");
+                return false;
+            }
+            else if (output == null) {
+                AlertBox.display("Error", "No output directory selected");
+                return false;
+            }
+            else return true;
+        }
+        return false;
     }
 }

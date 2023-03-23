@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import qu4lizz.taskscheduler.resource.Resource;
 import qu4lizz.taskscheduler.scheduler.FIFOTaskScheduler;
 import qu4lizz.taskscheduler.scheduler.PreemptiveTaskScheduler;
+import qu4lizz.taskscheduler.scheduler.RoundRobinPriorityBasedScheduler;
 import qu4lizz.taskscheduler.task.Task;
 import qu4lizz.taskscheduler.task.UserTask;
 import qu4lizz.taskscheduler.utils.Utils;
@@ -57,11 +58,10 @@ public class TaskSchedulerTest {
 
         task1.getTask().requestPause();
         Thread.sleep(200);
-        System.out.println(task1.getState());
         assertSame(task1.getState(), Task.State.PAUSED);
 
         task1.getTask().requestContinueOrStart();
-        Thread.sleep(300);
+        Thread.sleep(500);
         System.out.println(task1.getState());
         assertSame(task1.getState(), Task.State.RUNNING);
     }
@@ -171,6 +171,29 @@ public class TaskSchedulerTest {
         Thread.sleep(500);
         assertSame(task1.getState(), Task.State.RUNNING);
         assertSame(task2.getState(), Task.State.WAITING_FOR_RESOURCE);
+    }
 
+    @Test
+    void roundRobinTest() throws InterruptedException {
+        RoundRobinPriorityBasedScheduler roundRobinTaskScheduler = new RoundRobinPriorityBasedScheduler(1, 100);
+
+        UserTask task1 = new DemoTask2("demo1", 6, 1);
+        UserTask task2 = new DemoTask2("demo2", 7, 1);
+
+        roundRobinTaskScheduler.addTask(task1, true);
+        roundRobinTaskScheduler.addTask(task2, true);
+
+        assertSame(task1.getState(), Task.State.RUNNING);
+        assertSame(task2.getState(), Task.State.READY_FOR_SCHEDULE);
+
+        Thread.sleep(600);
+
+        assertSame(task1.getState(), Task.State.CONTEXT_SWITCHED);
+        assertSame(task2.getState(), Task.State.RUNNING);
+
+        Thread.sleep(500);
+
+        assertSame(task1.getState(), Task.State.RUNNING);
+        assertSame(task2.getState(), Task.State.CONTEXT_SWITCHED);
     }
 }

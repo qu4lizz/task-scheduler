@@ -17,6 +17,9 @@ public class GUI extends Application {
     public static final String TITLE = "Task Scheduler";
     public static final String FXML_PATH = "main.fxml";
     public static final String ICON_PATH = "icons/main_icon.png";
+    public static Image startIcon;
+    public static Image pauseIcon;
+    public static Image stopIcon;
     public static Image icon;
     public static String BACKGROUND_COLOR;
     public static String TEXT_COLOR;
@@ -30,6 +33,9 @@ public class GUI extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         icon = new Image(GUI.class.getResource(ICON_PATH).toExternalForm());
+        startIcon = new Image(GUI.class.getResource("icons/start_icon.png").toExternalForm());
+        pauseIcon = new Image(GUI.class.getResource("icons/pause_icon.png").toExternalForm());
+        stopIcon = new Image(GUI.class.getResource("icons/stop_icon.png").toExternalForm());
 
         initializeColors();
 

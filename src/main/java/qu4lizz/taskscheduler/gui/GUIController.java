@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import qu4lizz.taskscheduler.scheduler.TaskScheduler;
@@ -24,13 +25,11 @@ import java.util.ResourceBundle;
 
 public class GUIController implements Initializable {
     @FXML
-    private ListView<UserTask> tasks;
+    private GridPane root;
     @FXML
     private ListView<String> taskTypes;
     private final HashMap<String, Class<?>> nameToGUIClass = new HashMap<>();
     private TaskScheduler taskScheduler;
-
-    public ListView<UserTask> getTasks () { return tasks; }
     private final RuntimeTypeAdapterFactory<UserTask> typeFactory = RuntimeTypeAdapterFactory.of(UserTask.class, "type");
     private Gson gson = new GsonBuilder().registerTypeAdapterFactory(typeFactory).create();
 
@@ -65,17 +64,21 @@ public class GUIController implements Initializable {
             Constructor<?> constructor = classType.getConstructor();
             UserTaskGUI newTask = (UserTaskGUI)constructor.newInstance();
 
-            Scene scene = newTask.getScene();
-            Stage stage = new Stage();
-            stage.setScene(scene);
+            Stage stage = newTask.getStage();
             stage.setTitle(GUI.TITLE);
             stage.setMinWidth(600);
             stage.setMinHeight(700);
             stage.getIcons().add(GUI.icon);
-            stage.showAndWait();
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
 
             // Add task to list
+            // think about mapping task to hbox
+            Task controllerTask = newTask.getTask().getTask();
+            TaskHBox taskGUI = new TaskHBox(newTask.getTask().getName(), newTask.getTask().getTask());
+            controllerTask.setOnProgressUpdate(taskGUI::updateProgress);
+
+            root.add(taskGUI, 0, root.getChildren().size());
             taskScheduler.addTask(newTask.getTask(), newTask.shouldStartImmediately());
         } catch (Exception e) {
             e.printStackTrace();

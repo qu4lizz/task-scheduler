@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import qu4lizz.taskscheduler.task.UserTask;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public abstract class UserTaskGUI {
     private UserTask task;
     private boolean startImmediately;
     private Scene scene;
+    private Stage stage;
 
     public UserTaskGUI() {
         anchorPane = new AnchorPane();
@@ -94,8 +96,13 @@ public abstract class UserTaskGUI {
         button.setMnemonicParsing(false);
         button.setOnMouseClicked(e -> {
             try {
-                createOnMouseClick(e);
-            } catch (Exception ignore) { } });
+                mouseAction(e);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        });
         button.setPrefHeight(62.0);
         button.setPrefWidth(134.0);
 
@@ -113,11 +120,13 @@ public abstract class UserTaskGUI {
         anchorPane.getChildren().addAll(titleLabel, grid, button);
 
         scene = new Scene(anchorPane);
+        stage = new Stage();
+        stage.setScene(scene);
     }
 
     public GridPane getGrid() { return grid; }
 
-    public Scene getScene() { return scene; }
+    public Stage getStage() { return stage; }
 
     public void setTaskSpecification(UserTask task, boolean startImmediately) {
         this.task = task;
@@ -174,15 +183,16 @@ public abstract class UserTaskGUI {
      */
     protected abstract void createOnMouseClick(MouseEvent event) throws IOException, InterruptedException;
 
+    public final void mouseAction(MouseEvent event) throws IOException, InterruptedException {
+        createOnMouseClick(event);
+        stage.close();
+    }
     protected boolean validInput() {
         if (nameField.getText().isEmpty()) {
             AlertBox.display("Error", "Please enter the name of the task");
             return false;
         } else if (numberField.getText().isEmpty()) {
             AlertBox.display("Error", "Please enter the number of the task");
-            return false;
-        } else if ((!execTimeField.getText().isEmpty() || endTimeField.getText().isEmpty()) && startDateField.getText().isEmpty()) {
-            AlertBox.display("Error", "Please enter the start date of the task");
             return false;
         }
         return true;

@@ -37,7 +37,7 @@ public class DemoTask3 extends UserTask {
         for (int i = 0; i < numIterations; i++) {
             checks();
 
-            setProgress((i + 1) / (double)numIterations);
+            addProgress((i + 1) / (double)numIterations);
 
             System.out.println("DemoTask1 (" + getName() + "):" + i);
             try {
@@ -50,10 +50,5 @@ public class DemoTask3 extends UserTask {
         }
         unlock("resource1");
         System.out.println("done");
-    }
-    private void checks() {
-        checkForKill();
-        checkForPause();
-        checkForContextSwitch();
     }
 }

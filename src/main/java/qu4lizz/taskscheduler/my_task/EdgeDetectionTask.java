@@ -1,5 +1,6 @@
 package qu4lizz.taskscheduler.my_task;
 
+import qu4lizz.taskscheduler.gui.AlertBox;
 import qu4lizz.taskscheduler.task.UserTask;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -14,56 +15,55 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class EdgeDetectionTask extends UserTask {
     private BufferedImage[] sourceImages;
-    private final String outputDir;
+    private String outputDir;
     private final AtomicBoolean didRead = new AtomicBoolean(true);
     private Thread[] threads;
+    private String[] paths;
+    private int numOfThreads;
 
-    public EdgeDetectionTask(String name, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+    private void setAttributes(int numOfThreads, String[] paths, String outputDir) {
+        this.paths = paths;
+        this.outputDir = outputDir;
+        this.numOfThreads = numOfThreads;
+    }
+    public EdgeDetectionTask(String name, int numOfThreads, String[] paths, String outputDir) {
         super(name, numOfThreads);
-        readImages(numOfThreads, paths);
-        this.outputDir = outputDir;
+        setAttributes(numOfThreads, paths, outputDir);
     }
 
-    public EdgeDetectionTask(String name, int priority, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+    public EdgeDetectionTask(String name, int priority, int numOfThreads, String[] paths, String outputDir) {
         super(name, priority, numOfThreads);
-        readImages(numOfThreads, paths);
-        this.outputDir = outputDir;
+        setAttributes(numOfThreads, paths, outputDir);
     }
 
-    public EdgeDetectionTask(String name, String startDate, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+    public EdgeDetectionTask(String name, String startDate, int numOfThreads, String[] paths, String outputDir) {
         super(name, startDate, numOfThreads);
-        readImages(numOfThreads, paths);
-        this.outputDir = outputDir;
+        setAttributes(numOfThreads, paths, outputDir);
     }
 
-    public EdgeDetectionTask(String name, int priority, String startDate, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+    public EdgeDetectionTask(String name, int priority, String startDate, int numOfThreads, String[] paths, String outputDir) {
         super(name, priority, startDate, numOfThreads);
-        readImages(numOfThreads, paths);
-        this.outputDir = outputDir;
+        setAttributes(numOfThreads, paths, outputDir);
     }
 
-    public EdgeDetectionTask(String name, String startDate, String endDate, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+    public EdgeDetectionTask(String name, String startDate, String endDate, int numOfThreads, String[] paths, String outputDir) {
         super(name, startDate, endDate, numOfThreads);
-        readImages(numOfThreads, paths);
-        this.outputDir = outputDir;
+        setAttributes(numOfThreads, paths, outputDir);
     }
 
-    public EdgeDetectionTask(String name, int priority, String startDate, String endDate, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+    public EdgeDetectionTask(String name, int priority, String startDate, String endDate, int numOfThreads, String[] paths, String outputDir) {
         super(name, priority, startDate, endDate, numOfThreads);
-        readImages(numOfThreads, paths);
-        this.outputDir = outputDir;
+        setAttributes(numOfThreads, paths, outputDir);
     }
 
-    public EdgeDetectionTask(String name, String startDate, int time, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+    public EdgeDetectionTask(String name, String startDate, int time, int numOfThreads, String[] paths, String outputDir) {
         super(name, startDate, time, numOfThreads);
-        readImages(numOfThreads, paths);
-        this.outputDir = outputDir;
+        setAttributes(numOfThreads, paths, outputDir);
     }
 
-    public EdgeDetectionTask(String name, int priority, String startDate, int time, int numOfThreads, String[] paths, String outputDir) throws IOException, InterruptedException {
+    public EdgeDetectionTask(String name, int priority, String startDate, int time, int numOfThreads, String[] paths, String outputDir) {
         super(name, priority, startDate, time, numOfThreads);
-        this.outputDir = outputDir;
-        readImages(numOfThreads, paths);
+        setAttributes(numOfThreads, paths, outputDir);
     }
 
     private void readImages(int numOfThreads, String[] paths) throws IOException, InterruptedException {
@@ -73,10 +73,12 @@ public class EdgeDetectionTask extends UserTask {
         for(int i = 0, k = 0; k < numOfThreads; k++) {
             final int index = i;
             final int end = k == numOfThreads - 1 ? paths.length : i + (int)Math.ceil((double) paths.length / numOfThreads);
+            final double progress = 0.15 / numOfThreads / (end - index);
             threads[k] = new Thread(() -> {
                 try {
                     for(int j = index; j < end; j++) {
                         sourceImages[j] = ImageIO.read(new File(paths[j]));
+                        addProgress(progress);
                     }
                 } catch (IOException ignore) {
                     didRead.set(false);
@@ -94,28 +96,40 @@ public class EdgeDetectionTask extends UserTask {
         for(int i = 0; i < used; i++) {
             threads[i].join();
         }
+        checks();
     }
 
     public void execute() {
+        try {
+            readImages(numOfThreads, paths);
+        } catch (IOException | InterruptedException e) {
+            AlertBox.display("Error", "Failed to load image");
+            return;
+        }
+
+        checks();
         long chunk = calculateChunk();
         long currentChunk;
         ArrayList<BufferedImage> chunkedImages = new ArrayList<>();
         Map<Integer, ArrayList<Integer>> imagePieces = new LinkedHashMap<>();
         Map<Integer, ArrayList<Integer>> imagesPerThread = new LinkedHashMap<>();
         int x = 0, y = 0, width, height, leftInChunk = 0, threadIndex = 0;
+
+        addProgress(0.05);
+        // Chunking images
         for(int currSrc = 0, currChnkd = 0; currSrc < sourceImages.length; ) {
+            checks();
             currentChunk = 0;
             while (chunk > currentChunk && currSrc < sourceImages.length) {
+                checks();
                 width = sourceImages[currSrc].getWidth();
                 height = sourceImages[currSrc].getHeight();
                 long totalPixels = (long) width * height;
                 if (chunk + leftInChunk >= totalPixels + currentChunk) {
                     chunkedImages.add(sourceImages[currSrc]);
-                    if (imagePieces.get(currSrc) == null)
-                        imagePieces.put(currSrc, new ArrayList<>());
+                    imagePieces.computeIfAbsent(currSrc, k -> new ArrayList<>());
                     imagePieces.get(currSrc).add(currChnkd);
-                    if (imagesPerThread.get(threadIndex) == null)
-                        imagesPerThread.put(threadIndex, new ArrayList<>());
+                    imagesPerThread.computeIfAbsent(threadIndex, k -> new ArrayList<>());
                     imagesPerThread.get(threadIndex).add(currChnkd);
                     currChnkd++;
                     currSrc++;
@@ -127,11 +141,9 @@ public class EdgeDetectionTask extends UserTask {
                     int x1 = width;
                     int y1 = Math.min((int) (chunk / x1), sourceImages[currSrc].getHeight() - y);
                     chunkedImages.add(sourceImages[currSrc].getSubimage(x, y, x1, y1));
-                    if (imagePieces.get(currSrc) == null)
-                        imagePieces.put(currSrc, new ArrayList<>());
+                    imagePieces.computeIfAbsent(currSrc, k -> new ArrayList<>());
                     imagePieces.get(currSrc).add(currChnkd);
-                    if (imagesPerThread.get(threadIndex) == null)
-                        imagesPerThread.put(threadIndex, new ArrayList<>());
+                    imagesPerThread.computeIfAbsent(threadIndex, k -> new ArrayList<>());
                     imagesPerThread.get(threadIndex).add(currChnkd);
                     currChnkd++;
                     currentChunk += (long) x1 * y1;
@@ -153,22 +165,35 @@ public class EdgeDetectionTask extends UserTask {
                 }
 
             }
+            addProgress(0.2 / sourceImages.length);
         }
+        // 0.25
+        checks();
+
+        // process images
         BufferedImage[] chunkedResult = getProcessedImages(imagesPerThread, chunkedImages);
+        // 0.70
         BufferedImage[] result = new BufferedImage[sourceImages.length];
         for(int i = 0; i < sourceImages.length; i++) {
             BufferedImage[] imagePiece = new BufferedImage[imagePieces.get(i).size()];
             for(int j = 0; j < imagePieces.get(i).size(); j++) {
+                checks();
                 imagePiece[j] = chunkedResult[imagePieces.get(i).get(j)];
             }
             result[i] = concatenateImages(imagePiece);
+            addProgress(0.20 / sourceImages.length);
         }
-        new File(outputDir).mkdir();
+
+        // write images
+        // 0.90
         for (int i = 0; i < result.length; i++) {
+            checks();
             try {
                 ImageIO.write(result[i], "jpg", new File(outputDir + "/img" + i + ".jpg"));
             } catch (IOException ignore) { }
+            addProgress(0.10 / sourceImages.length);
         }
+        addProgress(1.00);
     }
 
     private long calculateChunk() {
@@ -187,10 +212,13 @@ public class EdgeDetectionTask extends UserTask {
     }
 
     private BufferedImage detectEdges(BufferedImage image) {
+        double progressChunk = 0.45 / threads.length;
         int[][] pixels = getPixels(image);
         int[][] grayscale = toGrayscale(pixels);
+        addProgress(progressChunk / 2);
         int[][] blur = applyGaussianBlur(grayscale, 3);
         int[][] edges = getEdges(blur);
+        addProgress(progressChunk / 2);
         return getImage(edges, image.getType());
     }
 
@@ -332,19 +360,22 @@ public class EdgeDetectionTask extends UserTask {
         return edges;
     }
 
-    public static BufferedImage concatenateImages(BufferedImage[] images) {
+    private static BufferedImage concatenateImages(BufferedImage[] images) {
         int width = images[0].getWidth();
         int height = 0;
         for (BufferedImage image : images) {
-            height += image.getHeight();
+            if (image != null)
+                height += image.getHeight();
         }
         int type = images[0].getType();
         BufferedImage concatenatedImage = new BufferedImage(width, height, type);
 
         int y = 0;
         for (BufferedImage image : images) {
-            concatenatedImage.createGraphics().drawImage(image, 0, y, null);
-            y += image.getHeight();
+            if (image != null) {
+                concatenatedImage.createGraphics().drawImage(image, 0, y, null);
+                y += image.getHeight();
+            }
         }
 
         return concatenatedImage;

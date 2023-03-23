@@ -2,7 +2,6 @@ package qu4lizz.taskscheduler.task;
 
 import qu4lizz.taskscheduler.utils.Utils;
 
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -17,12 +16,14 @@ public class Task {
     private Consumer<Task> onStarted;
     private BiConsumer<Task, String> onResourceAcquire;
     private Consumer<String> onResourceRelease;
+    private Consumer<Double> onProgressUpdate;
     private final Object stateLock = new Object();
     private final Object pauseLock = new Object();
     private final Object waitForFinishLock = new Object();
     private final Object contextSwitchLock = new Object();
     private final Object resourceLock = new Object();
-    private double progress; // = 0
+    private double progress;
+    private final Object progressLock = new Object();
 
     public enum State {
         NOT_SCHEDULED,
@@ -80,6 +81,7 @@ public class Task {
     public BiConsumer<Task, String> getOnResourceAcquire() { return onResourceAcquire; }
 
     public Consumer<String> getOnResourceRelease() { return onResourceRelease; }
+    public void setOnProgressUpdate(Consumer<Double> onProgressUpdate) { this.onProgressUpdate = onProgressUpdate; }
 
     public void setConsumers(Consumer<Task> onContinue, Consumer<Task> onFinished,
                              Consumer<Task> onPaused, Consumer<Task> onContextSwitch,
@@ -95,8 +97,14 @@ public class Task {
     }
     public Object getPauseLock() { return pauseLock; }
     public Object getWaitForFinishLock() { return waitForFinishLock; }
-    public double getProgress() { return progress; }
-    public void setProgress(double progress) { this.progress = progress; }
+    public double getProgress() { synchronized (progressLock) { return progress; } }
+    public void addProgress(double progress) {
+        synchronized (progressLock) {
+            this.progress += progress;
+        }
+        if (onProgressUpdate != null)
+            onProgressUpdate.accept(getProgress());
+    }
 
     // method called by TaskScheduler, not by user
     public void start() {
@@ -124,6 +132,7 @@ public class Task {
                         resourceLock.notify();
                     }
                 }
+                // TODO: what happens if task is in context switch or pause or resource acquire?
                 default -> throw new RuntimeException("Task is not ready for start");
             }
         }
@@ -133,17 +142,16 @@ public class Task {
         synchronized (stateLock) {
             switch (state) {
                 // TODO: what happens if task is in context switch?
-                case RUNNING -> state = State.PAUSE_REQUESTED;
+                case RUNNING, CONTEXT_SWITCH_REQUESTED, CONTEXT_SWITCHED -> state = State.PAUSE_REQUESTED;
                 case CONTINUE_REQUESTED -> state = State.PAUSED;
-                case PAUSED, PAUSE_REQUESTED -> { }
-                default -> throw new RuntimeException("Task is not ready for pause");
+                default -> throw new RuntimeException("Task can't be paused");
             }
         }
     }
 
     public void requestContextSwitch() {
         synchronized (stateLock) {
-            if (Objects.requireNonNull(state) == State.RUNNING) {
+            if (state == State.RUNNING) {
                 state = State.CONTEXT_SWITCH_REQUESTED;
             } else {
                 throw new RuntimeException("Task is not ready for context switch");
@@ -154,9 +162,8 @@ public class Task {
     public void requestKill() {
         synchronized (stateLock) {
             switch (state) {
-                case READY_FOR_SCHEDULE, RUNNING, PAUSE_REQUESTED, PAUSED, CONTINUE_REQUESTED, CONTEXT_SWITCH_REQUESTED ->
-                    state = State.KILL_REQUESTED;
-                default -> throw new RuntimeException("Task is not ready for kill");
+                case KILLED, FINISHED -> throw new RuntimeException("Task can't be killed");
+                default -> state = State.KILL_REQUESTED;
             }
         }
     }
@@ -173,8 +180,8 @@ public class Task {
                     onContinue.accept(this);
                 }
                 case PAUSE_REQUESTED -> state = State.RUNNING;
-                case RUNNING, CONTINUE_REQUESTED -> { }
-                default -> throw new RuntimeException("Task is not ready for continue");
+                case RUNNING, CONTINUE_REQUESTED, READY_FOR_SCHEDULE, CONTEXT_SWITCH_REQUESTED, CONTEXT_SWITCHED -> { }
+                default -> throw new RuntimeException("Task can't be started or continued");
             }
         }
     }
@@ -189,12 +196,8 @@ public class Task {
                         waitForFinishLock.notifyAll();
                     }
                 }
-                case FINISHED, KILLED -> {
-                    return;
-                }
-                default -> {
-                    throw new RuntimeException("Task can't finish");
-                }
+                case FINISHED, KILLED -> { }
+                default -> throw new RuntimeException("Task can't finish");
             }
         }
     }

@@ -5,7 +5,7 @@ import qu4lizz.taskscheduler.utils.Utils;
 /**
  * A class that represents a task that a user can create.
  * User that wants his Task needs to create Task class and derive it from this class,
- * then create GUI class and derive it from NewTask class, then register it in tasks.txt.
+ * then create GUI class and derive it from UserTaskGUI class, then register it in tasks.txt.
  */
 public abstract class UserTask implements ITask {
     private final Task task;
@@ -113,7 +113,7 @@ public abstract class UserTask implements ITask {
     public final Task.State getState() { return task.getState(); }
     public final int getNumOfThreads() { return numOfThreads; }
     public final double getProgress() { return task.getProgress(); }
-    public final void setProgress(double progress) { task.setProgress(progress); }
+    public final void addProgress(double progress) { task.addProgress(progress); }
 
     public Task getTask() {
         return task;
@@ -171,4 +171,9 @@ public abstract class UserTask implements ITask {
         task.getOnResourceRelease().accept(resourceId);
     }
 
+    public final void checks() {
+        checkForPause();
+        checkForKill();
+        checkForContextSwitch();
+    }
 }
