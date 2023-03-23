@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="task_scheduler" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a6c134b9-848a-4808-b854-87cdff01dad8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/task_scheduler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/colors.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/css/button.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/css/choicebox.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/css/listview.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/check-circle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/human-skull.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/main_icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/pause_icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/start_icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/stop_icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/main.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/new_task.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/scheduler_type.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/tasks.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/module-info.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/exceptions/CycleException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/exceptions/InvalidArgumentException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/exceptions/InvalidRequestException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/AlertBox.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/GUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/GUIController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/SchedulerType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/TaskHBox.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/UserTaskGUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/my_task/EdgeDetectionTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/my_task/EdgeDetectionTaskGUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/resource/Resource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/FIFOTaskScheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/PreemptiveTaskScheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/PriorityTaskScheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/RoundRobinPriorityBasedScheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/TaskScheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/task/ITask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/task/Task.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/task/UserTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/utils/ConcurrentPriorityQueue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/utils/Graph.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/utils/Utils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/colors.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/css/button.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/css/choicebox.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/css/listview.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/check-circle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/human-skull.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/main_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/pause_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/start_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/stop_icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/main.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/new_task.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/scheduler_type.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/tasks.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/qu4lizz/taskscheduler/tests/DemoTask1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/qu4lizz/taskscheduler/tests/DemoTask2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/qu4lizz/taskscheduler/tests/DemoTask3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/test/java/qu4lizz/taskscheduler/tests/TaskSchedulerTest.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="taskscheduler" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="taskscheduler" type="f1a62948:ProjectNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="CSS File" />
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2IpXRL2izkhMTm3TOAI1I7u0r8w" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;last_directory_selection&quot;: &quot;/run/media/qu4lizz/data/projects/Java/TaskScheduler/src/main/java/qu4lizz/taskscheduler&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/run/media/qu4lizz/data/projects/Java/TaskScheduler/src/test/java&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.22222222&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="qu4lizz.taskscheduler.filesystem" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/com/google/gson/internal" />
+      <recent name="$PROJECT_DIR$/src/main/java" />
+      <recent name="$PROJECT_DIR$/src/main/resources/qu4lizz/taskscheduler/gui/css" />
+      <recent name="$PROJECT_DIR$/src/main/java/qu4lizz/taskscheduler" />
+      <recent name="$PROJECT_DIR$/src/main/java/qu4lizz/task" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/qu4lizz/taskscheduler/gui" />
+      <recent name="$PROJECT_DIR$/src/main/resources/qu4lizz/taskscheduler/gui" />
+      <recent name="$PROJECT_DIR$/src/main/resources/qu4lizz/taskscheduler/gui/fxml" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/main/resources/qu4lizz/taskscheduler/gui/css" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="qu4lizz.taskscheduler.myTask" />
+      <recent name="qu4lizz.taskscheduler" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="qu4lizz.taskscheduler.gui" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.TaskScheduler [build]">
+    <configuration name="TaskScheduler [build]" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--stacktrace" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="TaskSchedulerTest" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;qu4lizz.taskscheduler.tests.TaskSchedulerTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.TaskScheduler [build]" />
+      <item itemvalue="Gradle.TaskSchedulerTest" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a6c134b9-848a-4808-b854-87cdff01dad8" name="Changes" comment="" />
+      <created>1670879489101</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1670879489101</updated>
+      <workItem from="1670879490483" duration="401000" />
+      <workItem from="1670879924241" duration="1406000" />
+      <workItem from="1670927405578" duration="7536000" />
+      <workItem from="1671095129939" duration="622000" />
+      <workItem from="1671098187393" duration="34000" />
+      <workItem from="1671214797178" duration="714000" />
+      <workItem from="1671215564841" duration="9679000" />
+      <workItem from="1671268308461" duration="13342000" />
+      <workItem from="1671364345423" duration="13793000" />
+      <workItem from="1671440605810" duration="14286000" />
+      <workItem from="1671963201314" duration="2669000" />
+      <workItem from="1671968077175" duration="16758000" />
+      <workItem from="1672043362744" duration="15596000" />
+      <workItem from="1672085572869" duration="3635000" />
+      <workItem from="1672090401899" duration="669000" />
+      <workItem from="1672091080059" duration="1661000" />
+      <workItem from="1672092799394" duration="1236000" />
+      <workItem from="1672129714180" duration="14426000" />
+      <workItem from="1672304309642" duration="4062000" />
+      <workItem from="1672316145092" duration="1601000" />
+      <workItem from="1672323664623" duration="312000" />
+      <workItem from="1672323990079" duration="5822000" />
+      <workItem from="1672393185813" duration="763000" />
+      <workItem from="1672394965350" duration="109000" />
+      <workItem from="1672407246808" duration="61000" />
+      <workItem from="1672407393780" duration="344000" />
+      <workItem from="1672407749366" duration="133000" />
+      <workItem from="1672410215020" duration="53000" />
+      <workItem from="1672416496717" duration="159000" />
+      <workItem from="1672424138162" duration="1096000" />
+      <workItem from="1678719319207" duration="367000" />
+      <workItem from="1678719708710" duration="12564000" />
+      <workItem from="1678778987118" duration="932000" />
+      <workItem from="1678780283233" duration="23477000" />
+      <workItem from="1678888879727" duration="14145000" />
+      <workItem from="1678955355463" duration="24155000" />
+      <workItem from="1679090765093" duration="2697000" />
+      <workItem from="1679142171651" duration="6238000" />
+      <workItem from="1679148426045" duration="13517000" />
+      <workItem from="1679220811181" duration="15461000" />
+      <workItem from="1679343896591" duration="2633000" />
+      <workItem from="1679472026000" duration="15639000" />
+      <workItem from="1679556418543" duration="6052000" />
+      <workItem from="1679563500206" duration="50000" />
+      <workItem from="1679563571806" duration="1138000" />
+      <workItem from="1679565803614" duration="347000" />
+      <workItem from="1679568138283" duration="210000" />
+      <workItem from="1679572573715" duration="739000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/qu4lizz/taskscheduler/my_task/EdgeDetectionTaskGUI.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="qu4lizz.taskscheduler.gui.DemoTask1" memberName="task" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
