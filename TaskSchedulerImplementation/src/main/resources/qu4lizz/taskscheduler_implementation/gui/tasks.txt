@@ -1,0 +1,1 @@
+qu4lizz.taskscheduler_implementation.my_task.EdgeDetectionTaskGUI EdgeDetectionTask

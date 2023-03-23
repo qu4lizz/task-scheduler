@@ -1,0 +1,35 @@
+.button {
+    -fx-background-color: #3b484d;
+    -fx-background-radius: 30px;
+    -fx-border-color: #674448;
+    -fx-border-width: 3;
+    -fx-border-radius: 25px;
+    -fx-text-fill: #fc8789;
+}
+
+.button:hover {
+    -fx-background-color:
+        linear-gradient(from 0% 93% to 0% 100%, #104b51 0%, #674448 100%)
+}
+
+.button:pressed {
+    -fx-padding: 10 15 13 15;
+    -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
+    -fx-background-color: #924144;
+}
+
+.toggle-button {
+    -fx-background-color: #2D2424;
+    -fx-background-radius: 30px;
+    -fx-border-color: #E0C097;
+    -fx-border-width: 3;
+    -fx-border-radius: 25px;
+}
+
+.toggle-button:hover {
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+            #9d4024,
+            #d86e3a,
+            radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
+}

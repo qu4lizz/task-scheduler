@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="task_scheduler">
+    <output-path>$PROJECT_DIR$/out/artifacts/task_scheduler</output-path>
+    <root id="archive" name="task_scheduler.jar">
+      <element id="module-output" name="taskscheduler.main" />
+    </root>
+  </artifact>
+</component>
