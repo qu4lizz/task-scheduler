@@ -10,71 +10,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6c134b9-848a-4808-b854-87cdff01dad8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/task_scheduler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/colors.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/css/button.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/css/choicebox.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/css/listview.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/check-circle.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/human-skull.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/main_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/pause_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/start_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/stop_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/main.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/new_task.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/scheduler_type.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/tasks.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/module-info.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/exceptions/CycleException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/exceptions/InvalidArgumentException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/exceptions/InvalidRequestException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/AlertBox.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/GUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/GUIController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/SchedulerType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/TaskHBox.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/gui/UserTaskGUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/my_task/EdgeDetectionTask.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/my_task/EdgeDetectionTaskGUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/resource/Resource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/FIFOTaskScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/PreemptiveTaskScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/PriorityTaskScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/RoundRobinPriorityBasedScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/scheduler/TaskScheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/task/ITask.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/task/Task.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/task/UserTask.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/utils/ConcurrentPriorityQueue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/utils/Graph.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/java/qu4lizz/taskscheduler/utils/Utils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/colors.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/css/button.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/css/choicebox.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/css/listview.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/check-circle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/human-skull.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/main_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/pause_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/start_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/icons/stop_icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/main.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/new_task.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/scheduler_type.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main/resources/qu4lizz/taskscheduler/gui/tasks.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/qu4lizz/taskscheduler/tests/DemoTask1.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/qu4lizz/taskscheduler/tests/DemoTask2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/qu4lizz/taskscheduler/tests/DemoTask3.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/test/java/qu4lizz/taskscheduler/tests/TaskSchedulerTest.java" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/../readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/check-circle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/human-skull.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -284,7 +230,7 @@
       <workItem from="1679563571806" duration="1138000" />
       <workItem from="1679565803614" duration="347000" />
       <workItem from="1679568138283" duration="210000" />
-      <workItem from="1679572573715" duration="739000" />
+      <workItem from="1679572573715" duration="1353000" />
     </task>
     <servers />
   </component>
