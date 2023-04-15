@@ -1,4 +1,4 @@
-background=#104b51
-controls=#3b484d
-text=#fc8789
+background=#784730
+controls=#5C3D2E
+text=#E0C097
 hover=#674448

@@ -42,7 +42,7 @@ public class EdgeDetectionTaskGUI extends UserTaskGUI {
     }
 
     @Override
-    public void createOnMouseClick(MouseEvent event) throws IOException, InterruptedException {
+    public boolean createOnMouseClick(MouseEvent event) throws IOException, InterruptedException, NumberFormatException {
         if (validInput()) {
             String[] imgSrc = new String[images.size()];
             for (int i = 0; i < images.size(); i++)
@@ -79,7 +79,9 @@ public class EdgeDetectionTaskGUI extends UserTaskGUI {
                             startDateField.getText(), Integer.parseInt(numberField.getText()), Integer.parseInt(numberField.getText()),
                             imgSrc, outputPath), startCheckbox.isSelected());
             }
+            return true;
         }
+        return false;
     }
 
     @Override

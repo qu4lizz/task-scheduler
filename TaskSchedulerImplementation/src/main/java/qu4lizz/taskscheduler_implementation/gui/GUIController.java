@@ -32,6 +32,14 @@ public class GUIController implements Initializable {
     private final RuntimeTypeAdapterFactory<UserTask> typeFactory = RuntimeTypeAdapterFactory.of(UserTask.class, "type");
     private Gson gson = new GsonBuilder().registerTypeAdapterFactory(typeFactory).create();
 
+    public void setTaskScheduler(TaskScheduler taskScheduler) {
+        this.taskScheduler = taskScheduler;
+    }
+
+    public TaskScheduler getTaskScheduler() {
+        return taskScheduler;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -71,11 +79,12 @@ public class GUIController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            // Add task to list
-            // think about mapping task to hbox
+            // Add a task to list
+            // think about mapping a task to hbox
             Task controllerTask = newTask.getTask().getTask();
             TaskHBox taskGUI = new TaskHBox(newTask.getTask().getName(), newTask.getTask().getTask());
             controllerTask.setOnProgressUpdate(taskGUI::updateProgress);
+            taskGUI.setClearAction(this::clearTask);
 
             root.add(taskGUI, 0, root.getChildren().size());
             taskScheduler.addTask(newTask.getTask(), newTask.shouldStartImmediately());
@@ -84,11 +93,13 @@ public class GUIController implements Initializable {
         }
     }
 
-    public void setTaskScheduler(TaskScheduler taskScheduler) {
-        this.taskScheduler = taskScheduler;
+    private void clearTask(TaskHBox task) {
+        int ind = root.getChildren().indexOf(task);
+        root.getChildren().remove(ind);
+        // move all tasks that are below this one up
+        for (int i = ind; i < root.getChildren().size(); i++) {
+            root.getChildren().get(i).setTranslateY(-task.getHeight());
+        }
     }
 
-    public TaskScheduler getTaskScheduler() {
-        return taskScheduler;
-    }
 }

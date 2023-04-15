@@ -110,12 +110,12 @@ public abstract class UserTaskGUI {
         AnchorPane.setRightAnchor(button, 233.0);
 
         button.setFont(buttonFont);
-        button.setStyle("-fx-background-color: #3b484d;\n" +
+        button.setStyle("-fx-background-color: #5C3D2E;\n" +
                 "    -fx-background-radius: 30px;\n" +
                 "    -fx-border-color: #674448;\n" +
                 "    -fx-border-width: 3;\n" +
                 "    -fx-border-radius: 25px;\n" +
-                "    -fx-text-fill: #fc8789;");
+                "    -fx-text-fill: #E0C097;");
 
         anchorPane.getChildren().addAll(titleLabel, grid, button);
 
@@ -181,11 +181,16 @@ public abstract class UserTaskGUI {
      *             }
      *          }
      */
-    protected abstract void createOnMouseClick(MouseEvent event) throws IOException, InterruptedException;
+    protected abstract boolean createOnMouseClick(MouseEvent event) throws IOException, InterruptedException;
 
     public final void mouseAction(MouseEvent event) throws IOException, InterruptedException {
-        createOnMouseClick(event);
-        stage.close();
+        try {
+            if (createOnMouseClick(event))
+                stage.close();
+        }
+        catch (Exception ignore) {
+            AlertBox.display("Error", "Invalid input");
+        }
     }
     protected boolean validInput() {
         if (nameField.getText().isEmpty()) {
