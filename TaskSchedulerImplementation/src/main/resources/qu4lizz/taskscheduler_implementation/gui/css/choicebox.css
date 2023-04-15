@@ -1,24 +1,24 @@
- .choice-box .context-menu { -fx-background-color: #3b484d; }
- .choice-box .menu-item:focused { -fx-background-color: #674448; }
- .choice-box .menu-item > .label { -fx-text-fill: #fc8789;
-     -fx-pref-width: 260;
-     -fx-alignment: center;
-     -fx-text-alignment: center;
-     -fx-font-family: "JetBrains Mono Medium Nerd Font Complete Mono";
-     -fx-font-size: 18px}
- .choice-box .menu-item:focused > .label { -fx-text-fill: #E0C097;
-     -fx-alignment: center;
-     -fx-text-alignment: center;
-     -fx-font-family: "JetBrains Mono Medium Nerd Font Complete Mono";
-     -fx-font-size: 20px}
- .choice-box {
-       -fx-background-color: #3b484d;
-       -fx-mark-color: #fc8789;
-   }
+.choice-box .context-menu { -fx-background-color: #784730; }
+.choice-box .menu-item:focused { -fx-background-color: #5C3D2E; }
+.choice-box .menu-item > .label { -fx-text-fill: #E0C097;
+    -fx-pref-width: 240;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-font-family: "IBM Plex Serif";
+    -fx-font-size: 16px}
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: #E0C097;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-font-family: "IBM Plex Serif";
+    -fx-font-size: 16px}
+.choice-box {
+    -fx-background-color: #2D2424;
+    -fx-mark-color: #5C3D2E;
+}
 
- .choice-box > .label { -fx-text-fill: #fc8789;
-                        -fx-alignment: center;
-                        -fx-text-alignment: center;
-                        -fx-font-family: "JetBrains Mono Medium Nerd Font Complete Mono";
-                        -fx-font-size: 18px
- }
+.choice-box > .label { -fx-text-fill: #B85C38;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-font-family: "IBM Plex Serif";
+    -fx-font-size: 18px}

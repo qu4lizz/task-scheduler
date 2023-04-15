@@ -9,17 +9,25 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import qu4lizz.taskscheduler.task.Task;
 
+import java.util.function.Consumer;
+
 
 public class TaskHBox extends HBox {
     private final ImageView startIcon = new ImageView(GUI.startIcon);
     private final ImageView pauseIcon = new ImageView(GUI.pauseIcon);
     private final ImageView killIcon = new ImageView(GUI.stopIcon);
+    private final ImageView clearIcon = new ImageView(GUI.clearIcon);
     private static final double ICON_OPACITY_LOW = 0.6;
     private static final double ICON_OPACITY_FULL = 1.0;
+    private Consumer<TaskHBox> clearAction;
 
     private Task task;
 
     private ProgressBar progressBar;
+
+    public void setClearAction(Consumer<TaskHBox> clearAction) {
+        this.clearAction = clearAction;
+    }
 
     public void updateProgress(double progress) {
         if (progress < 0)
@@ -39,7 +47,7 @@ public class TaskHBox extends HBox {
 
         Label label = new Label(name);
         label.setPrefHeight(30.0);
-        label.setPrefWidth(229.0);
+        label.setPrefWidth(200.0);
         label.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
         label.setFont(new Font("IBM Plex Sans", 22.0));
         label.setStyle("-fx-text-fill: " + GUI.TEXT_COLOR + ";");
@@ -57,8 +65,10 @@ public class TaskHBox extends HBox {
         pauseIcon.setOnMouseClicked(this::pauseOnMouseClicked);
         processIcon(killIcon);
         killIcon.setOnMouseClicked(this::killOnMouseClicked);
+        processIcon(clearIcon);
+        clearIcon.setOnMouseClicked(this::clearOnMouseClicked);
 
-        getChildren().addAll(label, progressBar, startIcon, pauseIcon, killIcon);
+        getChildren().addAll(label, progressBar, startIcon, pauseIcon, killIcon, clearIcon);
     }
 
     private void startOnMouseClicked(MouseEvent mouseEvent) {
@@ -90,6 +100,15 @@ public class TaskHBox extends HBox {
         startIcon.setOpacity(ICON_OPACITY_LOW);
         pauseIcon.setOpacity(ICON_OPACITY_LOW);
         killIcon.setOpacity(ICON_OPACITY_LOW);
+    }
+
+    private void clearOnMouseClicked(MouseEvent mouseEvent) {
+        try {
+            task.requestKill();
+            clearAction.accept(this);
+        } catch (RuntimeException e) {
+            AlertBox.display("Error", e.getMessage());
+        }
     }
 
     private static void processIcon(ImageView imageView) {

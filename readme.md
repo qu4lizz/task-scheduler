@@ -10,7 +10,7 @@ A library that implements logic for task scheduler and GUI implementation for li
 
 <p align="justify"> As for implementation, the application can easily expand with new task types. Application user to specifies the method of scheduling and all properties of the created task (allowed execution time, deadlines, etc.). The GUI application provides support for reviewing tasks during execution, reporting task progress through a progress bar, as well as creating, starting, pausing, resuming and stopping task. </p>
 
-As example task, chosen algorithm is edge detection of images.
+As an example task, chosen algorithm is edge detection of images.
 
 ## Credits
 
@@ -18,6 +18,8 @@ Main icon: <a href="https://www.flaticon.com/free-icons/plan" title="plan icons"
 
 Start icon: <a href="https://www.flaticon.com/free-icons/play-button" title="play button icons">Play button icons created by Pixel perfect - Flaticon</a>
 
-Stop icon: <a href="https://www.flaticon.com/free-icons/forbidden" title="forbidden icons">Forbidden icons created by Those Icons - Flaticon</a>
+Clear icon: <a href="https://www.flaticon.com/free-icons/clear" title="clear icons">Clear icons created by GOFOX - Flaticon</a>
 
 Pause icon: <a href="https://www.flaticon.com/free-icons/pause" title="pause icons">Pause icons created by inkubators - Flaticon</a>
+
+Stop icon: <a href="https://www.flaticon.com/free-icons/skull" title="skull icons">Skull icons created by Freepik - Flaticon</a>

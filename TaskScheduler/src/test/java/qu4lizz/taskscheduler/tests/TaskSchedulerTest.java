@@ -61,8 +61,15 @@ public class TaskSchedulerTest {
         assertSame(task1.getState(), Task.State.PAUSED);
 
         task1.getTask().requestContinueOrStart();
-        Thread.sleep(500);
-        System.out.println(task1.getState());
+        Thread.sleep(200);
+        assertSame(task1.getState(), Task.State.RUNNING);
+
+        task1.getTask().requestPause();
+        Thread.sleep(200);
+        assertSame(task1.getState(), Task.State.PAUSED);
+
+        task1.getTask().requestContinueOrStart();
+        Thread.sleep(200);
         assertSame(task1.getState(), Task.State.RUNNING);
     }
 

@@ -43,8 +43,8 @@ public class SchedulerType implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         schedulerType.getItems().addAll(schedulerOptions);
         schedulerType.setOnAction(this::getSchedulerType);
-        numOfTasks.setStyle("-fx-text-fill:#fc8789; -fx-background-color:#3b484d; -fx-border-color:#fc8789;");
-        timeSliceField.setStyle("-fx-text-fill:#fc8789; -fx-background-color:#3b484d; -fx-border-color:#fc8789;");
+        numOfTasks.setStyle("-fx-text-fill:#E0C097; -fx-background-color:#5C3D2E; -fx-border-color:#E0C097;");
+        timeSliceField.setStyle("-fx-text-fill:#E0C097; -fx-background-color:#5C3D2E; -fx-border-color:#E0C097;");
         timeSliceField.setVisible(false);
         timeSliceLabel.setVisible(false);
     }

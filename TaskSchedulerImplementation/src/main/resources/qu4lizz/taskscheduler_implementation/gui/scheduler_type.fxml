@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #104b51;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="qu4lizz.taskscheduler_implementation.gui.SchedulerType">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #784730;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="qu4lizz.taskscheduler_implementation.gui.SchedulerType">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="158.0" prefHeight="47.0" prefWidth="600.0" text="Choose the type of Task Scheduler" textAlignment="CENTER" textFill="#fc8789" AnchorPane.bottomAnchor="295.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="158.0">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="158.0" prefHeight="47.0" prefWidth="600.0" text="Choose the type of Task Scheduler" textAlignment="CENTER" textFill="#E0C097" AnchorPane.bottomAnchor="295.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="158.0">
          <font>
             <Font name="IBM Plex Sans" size="29.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="34.0" prefHeight="47.0" prefWidth="600.0" text="Number of concurrent tasks" textAlignment="CENTER" textFill="#fc8789">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="34.0" prefHeight="47.0" prefWidth="600.0" text="Number of concurrent tasks" textAlignment="CENTER" textFill="#E0C097">
          <font>
             <Font name="IBM Plex Sans" size="29.0" />
          </font>
@@ -30,7 +30,7 @@
             <Font name="IBM Plex Sans" size="24.0" />
          </font>
       </Button>
-      <Label fx:id="timeSliceLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="320.0" prefHeight="50.0" prefWidth="201.0" text="Time Slice:" textAlignment="CENTER" textFill="#fc8789">
+      <Label fx:id="timeSliceLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="320.0" prefHeight="50.0" prefWidth="201.0" text="Time Slice:" textAlignment="CENTER" textFill="#E0C097">
          <font>
             <Font name="IBM Plex Sans" size="29.0" />
          </font>

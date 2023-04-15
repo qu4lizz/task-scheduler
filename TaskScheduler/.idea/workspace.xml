@@ -10,17 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6c134b9-848a-4808-b854-87cdff01dad8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/check-circle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TaskSchedulerImplementation/src/main/resources/qu4lizz/taskscheduler_implementation/gui/icons/human-skull.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/qu4lizz/taskscheduler/tests/TaskSchedulerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/qu4lizz/taskscheduler/tests/TaskSchedulerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TaskSchedulerImplementation/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TaskSchedulerImplementation/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../TaskSchedulerImplementation/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,21 +77,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
-    &quot;last_directory_selection&quot;: &quot;/run/media/qu4lizz/data/projects/Java/TaskScheduler/src/main/java/qu4lizz/taskscheduler&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/run/media/qu4lizz/data/projects/Java/TaskScheduler/src/test/java&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.22222222&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "dev",
+    "jdk.selected.JAVA_MODULE": "17",
+    "last_directory_selection": "/run/media/qu4lizz/data/projects/Java/TaskScheduler/src/main/java/qu4lizz/taskscheduler",
+    "last_opened_file_path": "/run/media/qu4lizz/data/projects/Java/TaskScheduler/src/test/java",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.22222222",
+    "settings.editor.selected.configurable": "Errors",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="qu4lizz.taskscheduler.filesystem" />
@@ -125,7 +125,7 @@
       <recent name="qu4lizz.taskscheduler.gui" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.TaskScheduler [build]">
+  <component name="RunManager" selected="Gradle.TaskSchedulerTest">
     <configuration name="TaskScheduler [build]" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -145,6 +145,7 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
     <configuration name="TaskSchedulerTest" type="GradleRunConfiguration" factoryName="Gradle">
@@ -168,6 +169,7 @@
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
     <list>
@@ -231,6 +233,8 @@
       <workItem from="1679565803614" duration="347000" />
       <workItem from="1679568138283" duration="210000" />
       <workItem from="1679572573715" duration="1353000" />
+      <workItem from="1679576702120" duration="294000" />
+      <workItem from="1680706707065" duration="612000" />
     </task>
     <servers />
   </component>
